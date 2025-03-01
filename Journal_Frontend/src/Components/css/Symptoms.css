@@ -1,0 +1,114 @@
+.symptoms-container {
+  padding: 20px;
+  margin-top: 70px;
+  text-align: center;
+}
+.symptoms-container h2 {
+  color: #002b5b;
+  margin-bottom: 50px;
+}
+.add-btn {
+  position: absolute;
+  top: 170px;
+  right: 100px;
+  background: #0099cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.add-btn:hover {
+  background: #0077b6;
+}
+.symptoms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+.symptom-card {
+  background: #f0f8ff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+.symptom-card h3 {
+  color: #007bff;
+  margin: 0 0 5px;
+}
+.form-container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  max-height: 90vh;
+  position: relative;
+}
+.form-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.close-btn {
+  position: absolute;
+  top: 35px;
+  right: 30px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: black;
+}
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+select {
+  width: 105%;
+}
+.log-btn {
+  background: #0099cc;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 30px;
+}
+.log-btn:hover {
+  background: #0077b6;
+}
+
+@media (max-width: 768px) {
+  .add-btn {
+    position: absolute;
+    top: 425px;
+    right: 20px;
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+@media (max-width: 480px) {
+  .add-btn {
+    top: 480px;
+    right: 130px;
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+}
