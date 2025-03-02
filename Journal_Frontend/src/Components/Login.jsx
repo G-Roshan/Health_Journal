@@ -4,11 +4,32 @@ import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaHeartbeat } from "react-icons/fa";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
+  const navigate=useNavigate();
+  const [email,setEmail]=useState("");
+  const [password,setPass]=useState("");
+  const handleLogin=async(event)=>{
+    event.preventDefault()
+    const req=await axios.post("https://health-journal.onrender.com/login",{
+       email,
+       password
+    })
+    const message=req.data.message
+    const loggedin=req.data.isLoggedin
+    if(loggedin){
+        alert(message)
+        navigate("/home")
+    }else{
+        alert(message)
+        navigate("/signup")
+    }
+}
   return (
     <div className="login-container">
-      <form>
+      <form onSubmit={handleLogin}>
         <div className="login-input">
           <div className="login-content">
             <FaHeartbeat className="login-icon" />
@@ -21,6 +42,7 @@ const Login = () => {
             <input
               type="email"
               id="Email"
+              value={email} onChange={e=>setEmail(e.target.value)}
               placeholder="Enter your Email"
               required
             />
@@ -31,6 +53,7 @@ const Login = () => {
             <input
               type="password"
               id="Password"
+              value={password} onChange={e=>setPass(e.target.value)}
               placeholder="Enter your Password"
               required
             />

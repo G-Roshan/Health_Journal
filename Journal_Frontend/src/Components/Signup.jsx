@@ -4,37 +4,37 @@ import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaHeartbeat } from "react-icons/fa";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
-import "./css/Signup.css"
-import axios from 'axios'
-import {useNavigate} from "react-router-dom"
-import {useState} from "react"
+import "./css/Signup.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Signup = () => {
-  const navigate=useNavigate();
-  const [firstName,setFN]=useState();
-  const [lastName,setLN]=useState();
-  const [email,setEmail]=useState();
-  const [password,setPass]=useState();
-  const [phoneNumber,setPN]=useState();
+  const navigate = useNavigate();
+  const [firstName, setFN] = useState("");
+  const [lastName, setLN] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPass] = useState("");
+  const [phoneNumber, setPN] = useState(0);
 
-  const handleSignup=async(event)=>{
-    event.preventDefault()
-    const req=await axios.post("http://localhost:3001/signup",{
-      firstName:firstName,
-      lastName:lastName,
-      email:email,
-      password:password,
-      phoneNumber:phoneNumber
-    })
-    const message=req.data.message
-    const isSignUp=req.data.isSignUp
-    if(isSignUp){
-        alert(message)
-        navigate("/home")
-    }else{
-        alert(message)
-    }
-}
+  const handleSignup = async (event) => {
+    event.preventDefault();
+      const req=await axios.post("https://health-journal.onrender.com/signup",{
+        firstName:firstName,
+        lastName:lastName,
+        email:email,
+        password:password,
+        phoneNumber:phoneNumber
+      })
+      const message=req.data.message
+      const isSignUp=req.data.isSignUp
+      if(isSignUp){
+          alert(message)
+          navigate("/home")
+      }else{
+          alert(message)
+      }
+  }
   return (
     <div className="signup-container">
       <form onSubmit={handleSignup}>
@@ -44,14 +44,14 @@ const Signup = () => {
             <span className="signup-medi">Medi</span>
             <span className="signup-map">Map</span>
           </div>
-           
+
           <div className="signup-wrapper">
             <MdOutlineDriveFileRenameOutline className="input1-icon" />
             <input
               type="text"
               id="firstName"
               value={firstName}
-              onChange={e=>setFN(e.target.value)}
+              onChange={(e) => setFN(e.target.value)}
               placeholder="Enter your Firstname"
               required
             />
@@ -62,7 +62,7 @@ const Signup = () => {
               type="text"
               id="lastName"
               value={lastName}
-              onChange={e=>setLN(e.target.value)}
+              onChange={(e) => setLN(e.target.value)}
               placeholder="Enter your Lastname"
               required
             />
@@ -72,7 +72,8 @@ const Signup = () => {
             <input
               type="email"
               id="email"
-              value={email} onChange={e=>setEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your Email"
               required
             />
@@ -83,7 +84,8 @@ const Signup = () => {
             <input
               type="password"
               id="password"
-              value={password} onChange={e=>setPass(e.target.value)}
+              value={password}
+              onChange={(e) => setPass(e.target.value)}
               placeholder="Enter your Password"
               required
             />
@@ -93,7 +95,8 @@ const Signup = () => {
             <input
               type="text"
               id="phoneNumber"
-              value={phoneNumber} onChange={e=>setPN(e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setPN(e.target.value)}
               placeholder="Enter your phone number"
               pattern="[0-9]{10}"
               required
