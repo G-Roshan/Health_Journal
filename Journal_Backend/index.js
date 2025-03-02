@@ -63,10 +63,6 @@ app.post("/login", async (req, res) => {
     const existingUser = await Signup.findOne({ email: email });
     console.log(existingUser);
     if (existingUser) {
-      const payload = {
-        firstname: existingUser.firstName,
-        email: existingUser.email,
-      };
 
       const isValidPassword = await bcrypt.compare(
         password,
@@ -78,8 +74,7 @@ app.post("/login", async (req, res) => {
           .status(201)
           .json({
             message: "Login successful",
-            isLoggedin: true,
-            token: token,
+            isLoggedin: true
           });
       } else {
         res
