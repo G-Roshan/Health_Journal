@@ -3,7 +3,7 @@ const mdb = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const cors = require('cors');
-const Signup = require("./models/signupSchema");
+const Signup = require("./model1/signupSchema");
 const app = express();
 app.use(cors());
 app.use(express.json());
