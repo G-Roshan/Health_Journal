@@ -6,6 +6,7 @@ import Navbar from "./Components/Navbar"
 import Home from "./Components/Home"
 import Symptoms from "./Components/Symptoms"
 import MedicalHistory from "./Components/MedicalHistory"
+import Appointments from "./Components/Appointments"
 const App = () => {
    return (
       <main>
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/home" element={<Home/>}/>
           <Route path="/symptoms" element={<Symptoms/>}/>
           <Route path="/history" element={<MedicalHistory/>}/>
+          <Route path="/appointments" element={<Appointments/>}/>
         </Routes>
         </BrowserRouter>
       </main>

@@ -1,0 +1,96 @@
+.appointments-container {
+    margin-top: 80px;
+    padding: 20px;
+    text-align: center;
+  }
+  .add-btn {
+    top:190px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .appointments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 100px;
+  }
+  
+  .appointment-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  .form-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .form-container {
+    background: white;
+    padding: 50px;
+    border-radius: 10px;
+    position: relative;
+    width: 300px;
+  }
+  .form-container h2{
+    color:#002B5B;
+    margin-bottom: 30px;
+  }
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .log-btn {
+    width: 50%;
+    padding: 10px;
+    background: #0099cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .log-btn:hover{
+    background:#0077B6;
+  }
+  @media (max-width:800px){
+    .add-btn {
+        top:435px;
+        right:30px;
+      }
+  }
+  @media (max-width:450px){
+    .add-btn {
+        top:490px;
+        right:100px;
+      }
+  }
