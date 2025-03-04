@@ -8,13 +8,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = 3001;
+const PORT = 5000;
 dotenv.config();
 
 
 mdb
   
-  .connect(process.env.MONGODB_URL)
+  .connect("mongodb+srv://thirilokshasivakumar:123@sjit-mern.vt7r0.mongodb.net/journal")
   .then(() => {
     console.log("MDB Connection successfull");
   })
@@ -93,5 +93,5 @@ app.post("/login", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Server started successfully");
+  console.log(`Server running on port ${PORT}`);
 });
