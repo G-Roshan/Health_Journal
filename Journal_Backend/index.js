@@ -14,7 +14,7 @@ dotenv.config();
 
 mdb
   
-  .connect("mongodb+srv://thirilokshasivakumar:123@sjit-mern.vt7r0.mongodb.net/journal")
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("MDB Connection successfull");
   })
