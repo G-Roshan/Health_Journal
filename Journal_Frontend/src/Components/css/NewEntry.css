@@ -1,0 +1,116 @@
+.newentry-container {
+  padding: 20px;
+  margin-top: 80px;
+  text-align: center;
+}
+.newentry-container h2 {
+  color: #002b5b;
+  margin-bottom: 60px;
+}
+.add-btn {
+  background: #0099cc;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  top: 170px;
+}
+
+.add-btn:hover {
+  background-color: #0077b6;
+}
+
+.entries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 100px;
+}
+
+.entry-card {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  width: 250px;
+  text-align: left;
+}
+
+.entry-card h3 {
+  margin: 0 0 10px;
+}
+
+.entry-card p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.form-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  background: white;
+  padding: 50px;
+  border-radius: 8px;
+  width: 300;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 55px;
+  right: 40px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.log-btn {
+  width: 50%;
+  padding: 10px;
+  background: #0099cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.log-btn:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 800px) {
+  .add-btn {
+    top: 425px;
+    right: 30px;
+  }
+}
+@media (max-width: 450px) {
+  .add-btn {
+    top: 490px;
+    right: 110px;
+  }
+}

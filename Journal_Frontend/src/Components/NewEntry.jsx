@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import "./css/Appointments.css";
+import "./css/NewEntry.css";
 import { IoMdClose } from "react-icons/io";
 import Navbar from "./Navbar";
-const Appointments = () => {
-  const [hospital, setHospital] = useState("");
-  const [date, setDate] = useState("");
-  const [reason, setReason] = useState("");
+
+const NewEntry = () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
@@ -13,18 +13,16 @@ const Appointments = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-      hospital,
-      date,
-      reason,
+      title,
+      description,
       loggedAt: new Date().toLocaleString(),
     };
 
     setList([...list, data]);
     setSubmitted(true);
     setShow(false);
-    setHospital("");
-    setDate("");
-    setReason("");
+    setTitle("");
+    setDescription("");
 
     setTimeout(() => {
       setSubmitted(false);
@@ -35,23 +33,21 @@ const Appointments = () => {
     <div>
       <Navbar />
 
-      <div className="appointments-container">
-        <h2>Appointment Logs</h2>
+      <div className="newentry-container">
+        <h2>New Entries</h2>
         <button onClick={() => setShow(true)} className="add-btn">
-          Add New Appointment
+          Add New Entry
         </button>
-        <div className="appointments-grid">
+        <div className="entries-grid">
           {list.length === 0 ? (
-            <p>No appointments logged yet.</p>
+            <p>No entries logged yet.</p>
           ) : (
             list.map((item, index) => (
-              <div key={index} className="appointment-card">
-                <h3>{item.hospital}</h3>
+              <div key={index} className="entry-card">
+                <h3>{item.title}</h3>
                 <p>
-                  <strong>Date:</strong> {item.date}
-                </p>
-                <p>
-                  <strong>Reason:</strong> {item.reason || "Not specified"}
+                  <strong>Description:</strong>{" "}
+                  {item.description || "Not specified"}
                 </p>
                 <p>
                   <small>Logged on: {item.loggedAt}</small>
@@ -66,28 +62,22 @@ const Appointments = () => {
               <button className="close-btn" onClick={() => setShow(false)}>
                 <IoMdClose />
               </button>
-              <h2>Log Your Appointment</h2>
+              <h2>Log Your Entry</h2>
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
-                  value={hospital}
-                  onChange={(e) => setHospital(e.target.value)}
-                  placeholder="Hospital Name"
-                  required
-                />
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Entry Title"
                   required
                 />
                 <textarea
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  placeholder="Reason for Visit"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Describe your symptoms or medical notes"
                 ></textarea>
                 <button type="submit" className="log-btn">
-                  Log Appointment
+                  Log Entry
                 </button>
               </form>
             </div>
@@ -98,5 +88,4 @@ const Appointments = () => {
   );
 };
 
-export default Appointments; 
-
+export default NewEntry;

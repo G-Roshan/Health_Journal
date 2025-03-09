@@ -7,11 +7,14 @@ import Home from "./Components/Home"
 import Symptoms from "./Components/Symptoms"
 import MedicalHistory from "./Components/MedicalHistory"
 import Appointments from "./Components/Appointments"
+import NewEntry from "./Components/NewEntry"
+import TrackMedication from "./Components/TrackMedication"
+import EmergencyContacts from "./Components/EmergencyContacts"
+
 const App = () => {
    return (
       <main>
         <BrowserRouter>
-        <Navbar/>
         <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path="/signup" element={<Signup/>}/>
@@ -19,6 +22,9 @@ const App = () => {
           <Route path="/symptoms" element={<Symptoms/>}/>
           <Route path="/history" element={<MedicalHistory/>}/>
           <Route path="/appointments" element={<Appointments/>}/>
+          <Route path="/newentry" element={<NewEntry/>}/>
+          <Route path="/medication" element={<TrackMedication/>}/>
+          <Route path="/emergency" element={<EmergencyContacts/>}/>
         </Routes>
         </BrowserRouter>
       </main>

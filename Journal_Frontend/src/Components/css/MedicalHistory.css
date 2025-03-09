@@ -73,10 +73,7 @@
     max-height: 90vh;
     position: relative;
   }
-  .form-container h3{
-    color:#002B5B;
-    margin-bottom: 50px;
-  }
+  
   
   .close-btn {
     position: absolute;

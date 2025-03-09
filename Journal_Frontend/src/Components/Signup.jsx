@@ -4,7 +4,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaHeartbeat } from "react-icons/fa";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
-import { FaPhoneAlt } from "react-icons/fa";
+import { MdOutlineLocalPhone } from "react-icons/md";
 import "./css/Signup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -92,7 +92,7 @@ const Signup = () => {
             />
           </div>
           <div className="signup-wrapper">
-            <FaPhoneAlt className="input1-icon" />
+            <MdOutlineLocalPhone className="input1-icon" />
             <input
               type="text"
               id="phoneNumber"
