@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "./css/NewEntry.css";
 import { IoMdClose } from "react-icons/io";
-import Navbar from "./Navbar";
 
-const NewEntry = () => {
+const NewEntry = ({searchQuery}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -27,22 +26,23 @@ const NewEntry = () => {
     setTimeout(() => {
       setSubmitted(false);
     }, 1000);
+    
   };
-
+  const filteredList = list.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <div>
-      <Navbar />
-
       <div className="newentry-container">
         <h2>New Entries</h2>
         <button onClick={() => setShow(true)} className="add-btn">
           Add New Entry
         </button>
         <div className="entries-grid">
-          {list.length === 0 ? (
+          {filteredList.length === 0 ? (
             <p>No entries logged yet.</p>
           ) : (
-            list.map((item, index) => (
+            filteredList.map((item, index) => (
               <div key={index} className="entry-card">
                 <h3>{item.title}</h3>
                 <p>

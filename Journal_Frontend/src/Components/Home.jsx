@@ -7,7 +7,6 @@ import {
   FaBalanceScale,
 } from "react-icons/fa";
 import "./css/Home.css";
-import Navbar from "./Navbar";
 const healthTips = [
   "Stay hydrated! Drinking 8 glasses of water daily boosts metabolism. 💧",
   "Take a 10-minute walk after meals to aid digestion and lower blood sugar. 🚶‍♂️",
@@ -26,7 +25,6 @@ const Home = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="home-container">
         <div className="home">
           <div className="home-text">
@@ -59,7 +57,7 @@ const Home = () => {
               <FaPhoneAlt className="insights-icon" />
               Emergency Contacts
             </Link>
-            <Link to="/bmi-calculator" className="insights-space">
+            <Link to="/bmi" className="insights-space">
               <FaBalanceScale className="insights-icon" />
               Check BMI
             </Link>

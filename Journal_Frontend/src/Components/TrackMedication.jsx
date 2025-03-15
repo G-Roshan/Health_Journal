@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./css/TrackMedication.css";
 import { IoMdClose } from "react-icons/io";
-import Navbar from "./Navbar";
 
-const TrackMedication = () => {
+
+const TrackMedication = ({searchQuery}) => {
   const [medication, setMedication] = useState("");
   const [dosage, setDosage] = useState("");
   const [time, setTime] = useState("");
@@ -34,10 +34,11 @@ const TrackMedication = () => {
     setImage(null);
     document.getElementById("prescriptionImage").value = "";
   };
-
+  const filteredList = medications.filter((item) =>
+    item.medication.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <div>
-      <Navbar />
 
       <div className="trackmed-container">
         <h2>Track Your Medication</h2>
@@ -46,10 +47,10 @@ const TrackMedication = () => {
         </button>
 
         <div className="medication-grid">
-          {medications.length === 0 ? (
+          {filteredList.length === 0 ? (
             <p>No medications logged yet.</p>
           ) : (
-            medications.map((item, index) => (
+            filteredList.map((item, index) => (
               <div key={index} className="medication-card">
                 <h3>{item.medication}</h3>
                 <p>

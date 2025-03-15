@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./css/MedicalHistory.css";
 import { IoMdClose } from "react-icons/io";
-import Navbar from "./Navbar";
-const MedicalHistory = () => {
+
+const MedicalHistory = ({ searchQuery }) => {
   const [records, setRecords] = useState([]);
   const [text, setText] = useState("");
   const [reason, setReason] = useState("");
@@ -24,6 +24,9 @@ const MedicalHistory = () => {
       image: image ? URL.createObjectURL(image) : null,
     };
     setRecords([...records, newRecord]);
+    if (image) {
+      URL.revokeObjectURL(image);
+    }
 
     setText("");
     setReason("");
@@ -32,10 +35,12 @@ const MedicalHistory = () => {
     setShow(false);
     document.getElementById("historyImage").value = "";
   };
-
+  const filteredList = records.filter((item) =>
+    item.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
   return (
     <div>
-      <Navbar />
 
       <div className="history-container">
         <h2>Medical History</h2>
@@ -80,15 +85,16 @@ const MedicalHistory = () => {
           </div>
         )}
         <div className="records-list">
-          {records.length === 0 && <p>No Past Records</p>}
-          {records.map((record, index) => (
+          {filteredList.length === 0 && <p>No Past Records</p>}
+          {filteredList.map((record, index) => (
             <div className="record-card" key={index}>
-              <p>
-                <strong>Date:</strong> {record.date}
-              </p>
               <p>
                 <strong>Details:</strong> {record.text}
               </p>
+              <p>
+                <strong>Date:</strong> {record.date}
+              </p>
+              
               <p>
                 <strong>Reason:</strong> {record.reason}
               </p>

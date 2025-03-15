@@ -1,0 +1,89 @@
+.bmi-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+    margin: 0;
+  } 
+  
+  .bmi-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .bmi-card h2 {
+    color: #002B5B;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .input-group input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .btn-calculator {
+    background: #0099cc;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 30px;
+    width: 25%;
+  }
+  
+  .btn-calculator:hover {
+    background: #0077B6;
+  }
+  
+  .result {
+    margin-top: 20px;
+    padding: 10px;
+    background: #e0f7fa;
+    border-radius: 5px;
+  }
+  
+  .result h3,
+  .result h4 {
+    margin: 5px 0;
+    color: #002B5B;
+  }
+  
+  @media (max-width: 500px) {
+    .bmi-card {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .btn-calculator {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  
+  
+  
+  

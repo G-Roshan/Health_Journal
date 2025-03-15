@@ -43,9 +43,10 @@
     display: flex;
     align-items: center;
     background: white;
-    border-radius: 20px;
-    padding: 2px 10px;
-    width: 150px;
+    border-radius: 10px;  
+    padding: 2px 6px; 
+    width: 200px;  
+    height: 30px;
 }
 .search-icon{
     color: rgb(96, 95, 95);
@@ -53,7 +54,10 @@
 }
 .search-bar input{
     border: none;
+    outline: none;
     width: 100%;
+    padding: 2px; 
+    height: 100%;
 }
 .navbar-btn{
     background-color: #0099cc;
@@ -88,4 +92,4 @@
         width:100%;
         max-width:250px;
     }
-}
+} 

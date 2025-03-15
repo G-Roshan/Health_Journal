@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
-import { FaHeartbeat } from "react-icons/fa";
+import { FaSearch,FaHeartbeat } from "react-icons/fa";
 import "./css/Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ searchQuery, setSearchQuery }) => {
+  
   return (
     <header>
       <nav className="navbar-container">
@@ -22,9 +22,10 @@ const Navbar = () => {
         <div className="navbar-right">
           <div className="search-bar">
             <FaSearch className="search-icon" />
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder="Search... " value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}/>
           </div>
-          <button type="submit" className="navbar-btn">Login</button>
+          <Link to="/"><button type="submit" className="navbar-btn">Logout</button></Link>
         </div>
       </nav>
     </header>
@@ -32,3 +33,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+

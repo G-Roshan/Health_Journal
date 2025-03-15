@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "./css/EmergencyContacts.css";
 import { IoMdClose } from "react-icons/io";
-import Navbar from "./Navbar";
 
-const EmergencyContacts = () => {
+const EmergencyContacts = ({searchQuery}) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [txt, setTxt] = useState("");
@@ -20,10 +19,11 @@ const EmergencyContacts = () => {
     setPhone("");
     setTxt("");
   };
-
+  const filteredList = contacts.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <div>
-      <Navbar />
 
       <div className="emergency-container">
         <h2>Emergency Contacts</h2>
@@ -32,17 +32,18 @@ const EmergencyContacts = () => {
         </button>
 
         <div className="contacts-grid">
-          {contacts.length === 0 ? (
+          {filteredList .length === 0 ? (
             <p>No emergency contacts added yet.</p>
           ) : (
-            contacts.map((contact, index) => (
+            filteredList.map((contact, index) => (
               <div key={index} className="contact-card">
                 <h3>{contact.name}</h3>
+                
                 <p>
                   <strong>Phone:</strong> {contact.phone}
                 </p>
                 <p>
-                  <strong>Hospital Name:</strong> {contact.txt}
+                  <strong>Reason:</strong> {contact.txt}
                 </p>
               </div>
             ))

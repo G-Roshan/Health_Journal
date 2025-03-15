@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./css/Appointments.css";
 import { IoMdClose } from "react-icons/io";
-import Navbar from "./Navbar";
-const Appointments = () => {
+
+
+const Appointments = ({ searchQuery }) => {
   const [hospital, setHospital] = useState("");
   const [date, setDate] = useState("");
   const [reason, setReason] = useState("");
@@ -30,21 +31,23 @@ const Appointments = () => {
       setSubmitted(false);
     }, 1000);
   };
+  const filteredList = list.filter((item) =>
+    item.hospital.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div>
-      <Navbar />
-
+      
       <div className="appointments-container">
         <h2>Appointment Logs</h2>
         <button onClick={() => setShow(true)} className="add-btn">
           Add New Appointment
         </button>
         <div className="appointments-grid">
-          {list.length === 0 ? (
+          {filteredList.length === 0 ? (
             <p>No appointments logged yet.</p>
           ) : (
-            list.map((item, index) => (
+            filteredList.map((item, index) => (
               <div key={index} className="appointment-card">
                 <h3>{item.hospital}</h3>
                 <p>
