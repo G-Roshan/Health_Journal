@@ -16,7 +16,7 @@ const Symptoms = ({ searchQuery }) => {
 
   const fetchSymptoms = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/getsymptomscards");
+      const response = await axios.get("https://health-journal.onrender.com/getsymptomscards");
       setList(response.data);
     } catch (error) {
       console.error("Error fetching symptoms:", error);
@@ -38,7 +38,7 @@ const Symptoms = ({ searchQuery }) => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/addsymptomcard", data);
+      const response = await axios.post("https://health-journal.onrender.com/addsymptomcard", data);
       fetchSymptoms(); 
       setSubmitted(true);
       setShow(false);
