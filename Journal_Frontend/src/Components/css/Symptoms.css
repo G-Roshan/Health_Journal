@@ -105,8 +105,8 @@
 }
 @media (max-width: 480px) {
   .symptoms-add-btn {
-    top: 480px;
-    right: 130px;
+    top: 455px;
+    right: 120px;
     font-size: 12px;
     padding: 7px 10px;
   }

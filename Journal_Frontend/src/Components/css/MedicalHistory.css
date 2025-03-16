@@ -9,7 +9,7 @@
   margin-bottom: 60px;
 }
 
-.add-btn {
+.history-add-btn {
   position: absolute;
   top: 170px;
   right: 100px;
@@ -22,7 +22,7 @@
   border-radius: 5px;
 }
 
-.add-btn:hover {
+.history-add-btn:hover {
   background: #0077b6;
 }
 
@@ -54,7 +54,7 @@
   cursor: pointer;
 }
 
-.form-popup {
+.history-form-popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -66,7 +66,7 @@
   align-items: center;
 }
 
-.form-container {
+.history-form-container {
   background: white;
   padding: 30px;
   border-radius: 10px;
@@ -75,7 +75,7 @@
   position: relative;
 }
 
-.close-btn {
+.history-close-btn {
   position: absolute;
   top: 30px;
   right: 20px;
@@ -86,9 +86,9 @@
   color: black;
 }
 
-input,
-select,
-textarea {
+.history-form-container input,
+.history-form-container select,
+.history-form-container textarea {
   width: 100%;
   padding: 10px;
   margin: 5px 0;
@@ -96,7 +96,7 @@ textarea {
   border-radius: 3px;
 }
 
-.log-btn {
+.history-log-btn {
   background: #0099cc;
   color: white;
   border: none;
@@ -106,7 +106,7 @@ textarea {
   margin-top: 20px;
 }
 
-.log-btn:hover {
+.history-log-btn:hover {
   background: #0077b6;
 }
 
@@ -129,21 +129,21 @@ textarea {
 }
 
 @media (max-width: 768px) {
-  .add-btn {
-    top: 430px;
-    right: 50px;
+  .history-add-btn {
+    top: 415px;
+    right: 60px;
     font-size: 14px;
     padding: 10px 10px;
   }
 
-  .form-container {
+  .history-form-container {
     width: 90%;
     max-width: 300px;
   }
 }
 @media (max-width: 500px) {
-  .add-btn {
-    top: 480px;
-    right: 140px;
+  .history-add-btn {
+    top: 460px;
+    right: 150px;
   }
 }

@@ -29,7 +29,8 @@ const Signup = () => {
       const isSignUp=req.data.isSignUp
       if(isSignUp){
           alert(message)
-          navigate("/home")
+          navigate("/")
+          
       }else{
           alert(message)
       }

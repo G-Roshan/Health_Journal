@@ -6,13 +6,14 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { FaHeartbeat } from "react-icons/fa";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useUser} from "../Components/UserContext";
 import axios from "axios";
 
 const Login = () => {
   const navigate=useNavigate();
   const [email,setEmail]=useState("");
   const [password,setPass]=useState("");
-
+  const {setUser} =useUser();
   
   const handleLogin=async(event)=>{
     event.preventDefault()
@@ -24,6 +25,7 @@ const Login = () => {
        const message=req.data.message
        const loggedin=req.data.isLoggedin
        if(loggedin){
+         setUser({userid:req.data.userid});
          navigate("/home")
        }else{
           navigate("/signup")

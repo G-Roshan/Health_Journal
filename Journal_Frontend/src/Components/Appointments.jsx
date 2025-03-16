@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./css/Appointments.css";
 import { IoMdClose } from "react-icons/io";
-
+import axios from "axios";
 
 const Appointments = ({ searchQuery }) => {
   const [hospital, setHospital] = useState("");
@@ -10,22 +10,37 @@ const Appointments = ({ searchQuery }) => {
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
 
-  const handleSubmit = (e) => {
+  const fetchAppointments = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/getappointmentscards");
+      setList(response.data);
+    } catch (error) {
+      console.error("Error fetching symptoms:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
       hospital,
       date,
       reason,
-      loggedAt: new Date().toLocaleString(),
     };
 
-    setList([...list, data]);
-    setShow(false);
+    try {
+      const response = await axios.post("http://localhost:5000/addappointmentcard", data);
+      fetchAppointments(); 
+      setShow(false);
     setHospital("");
     setDate("");
     setReason("");
-
-    
+    } catch (error) {
+      console.error("Error adding symptom:", error);
+    }  
   };
   const filteredList = list.filter((item) =>
     item.hospital.toLowerCase().includes(searchQuery.toLowerCase())
@@ -36,7 +51,7 @@ const Appointments = ({ searchQuery }) => {
       
       <div className="appointments-container">
         <h2>Appointment Logs</h2>
-        <button onClick={() => setShow(true)} className="add-btn">
+        <button onClick={() => setShow(true)} className="appointments-add-btn">
           Add New Appointment
         </button>
         <div className="appointments-grid">
@@ -52,17 +67,14 @@ const Appointments = ({ searchQuery }) => {
                 <p>
                   <strong>Reason:</strong> {item.reason || "Not specified"}
                 </p>
-                <p>
-                  <small>Logged on: {item.loggedAt}</small>
-                </p>
               </div>
             ))
           )}
         </div>
         {show && (
-          <div className="form-popup">
-            <div className="form-container">
-              <button className="close-btn" onClick={() => setShow(false)}>
+          <div className="appointments-form-popup">
+            <div className="appointments-form-container">
+              <button className="appointments-close-btn" onClick={() => setShow(false)}>
                 <IoMdClose />
               </button>
               <h2>Log Your Appointment</h2>
@@ -85,7 +97,7 @@ const Appointments = ({ searchQuery }) => {
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Reason for Visit"
                 ></textarea>
-                <button type="submit" className="log-btn">
+                <button type="submit" className="appointments-log-btn">
                   Log Appointment
                 </button>
               </form>

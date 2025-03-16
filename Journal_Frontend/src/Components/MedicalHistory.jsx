@@ -71,13 +71,13 @@ const MedicalHistory = ({ searchQuery }) => {
 
       <div className="history-container">
         <h2>Medical History</h2>
-        <button className="add-btn" onClick={() => setShow(true)}>
+        <button className="history-add-btn" onClick={() => setShow(true)}>
           Add New
         </button>
         {show && (
-          <div className="form-popup">
-            <div className="form-container">
-              <button className="close-btn" onClick={() => setShow(false)}>
+          <div className="history-form-popup">
+            <div className="history-form-container">
+              <button className="history-close-btn" onClick={() => setShow(false)}>
                 <IoMdClose />
               </button>
               <h3>Add Medical Record</h3>
@@ -105,7 +105,7 @@ const MedicalHistory = ({ searchQuery }) => {
                 accept="image/*"
                 onChange={(e) => setImage(e.target.files[0])}
               />
-              <button className="log-btn" onClick={handleAddRecord}>
+              <button className="history-log-btn" onClick={handleAddRecord}>
                 Save Record
               </button>
             </div>

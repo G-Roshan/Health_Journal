@@ -3,12 +3,19 @@
   padding: 20px;
   text-align: center;
 }
-.add-btn {
-  top: 190px;
-  padding: 10px 20px;
-  background: #007bff;
+.appointments-container h2{
+  color: #002b5b;
+  margin-bottom: 60px;
+} 
+.appointments-add-btn {
+  position: absolute;
+  top: 150px;
+  right: 100px;
+  background: #0099cc;
   color: white;
   border: none;
+  padding: 10px 15px;
+  font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
 }
@@ -29,7 +36,7 @@
   text-align: left;
 }
 
-.form-popup {
+.appointments-form-popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -41,18 +48,18 @@
   justify-content: center;
 }
 
-.form-container {
+.appointments-form-container {
   background: white;
   padding: 50px;
   border-radius: 10px;
   position: relative;
   width: 300px;
 }
-.form-container h2 {
+.appointments-form-container h2 {
   color: #002b5b;
   margin-bottom: 30px;
 }
-.close-btn {
+.appointments-close-btn {
   position: absolute;
   top: 20px;
   right: 10px;
@@ -62,8 +69,8 @@
   cursor: pointer;
 }
 
-input,
-textarea {
+.appointments-form-container input,
+.appointments-form-container textarea {
   width: 100%;
   margin: 10px 0;
   padding: 8px;
@@ -71,7 +78,7 @@ textarea {
   border-radius: 5px;
 }
 
-.log-btn {
+.appointments-log-btn {
   width: 50%;
   padding: 10px;
   background: #0099cc;
@@ -80,18 +87,18 @@ textarea {
   cursor: pointer;
   border-radius: 5px;
 }
-.log-btn:hover {
+.appointments-log-btn:hover {
   background: #0077b6;
 }
-@media (max-width: 800px) {
-  .add-btn {
-    top: 435px;
+@media (max-width: 768px) {
+  .appointments-add-btn {
+    top: 415px;
     right: 30px;
   }
 }
-@media (max-width: 450px) {
-  .add-btn {
-    top: 490px;
-    right: 100px;
+@media (max-width: 500px) {
+  .appointments-add-btn {
+    top: 470px;
+    right: 85px;
   }
 }

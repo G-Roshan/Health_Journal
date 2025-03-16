@@ -8,6 +8,8 @@ const multer=require("multer");
 const Signup = require("./model1/signupSchema");
 const SymptomCard =require("./model1/symptomsSchema");
 const HistoryCard=require("./model1/historySchema");
+const AppointmentCard=require("./model1/appointmentsSchema");
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -177,6 +179,41 @@ app.get("/gethistorycards", async (req, res) => {
 }
 });
 
+//---------------------------------------------Appointments---------------------------------------------------
+
+app.post("/addappointmentcard", async (req, res) => {
+  
+  try {
+    const {hospital,date,reason} = req.body;
+
+    if (!hospital||!date) {
+      return res.status(400).json({ message: "Please fill the details" });
+    }
+
+      const newAppointmentEntry = new AppointmentCard({hospital,date,reason });
+      await newAppointmentEntry.save();
+      res.status(201).json({ message: "Appointments added successfully", entry: newAppointmentEntry });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/getappointmentscards", async (req, res) => {
+  try {
+    const appointments = await AppointmentCard.find();
+    if (appointments.length === 0) {
+      return res.status(404).json({ message: "No appointments found for this user" });
+    }
+
+    res.status(200).json(appointments);
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+}
+});
+
+//--------------------------------------------------------------------------------------------------------------
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
