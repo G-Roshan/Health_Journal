@@ -1,10 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { FaSearch,FaHeartbeat } from "react-icons/fa";
 import "./css/Navbar.css";
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
-  
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("userid");
+    navigate("/");
+  }; 
   return (
     <header>
       <nav className="navbar-container">
@@ -25,7 +29,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             <input type="text" placeholder="Search... " value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}/>
           </div>
-          <Link to="/"><button type="submit" className="navbar-btn">Logout</button></Link>
+          <button type="submit" className="navbar-btn" onClick={handleLogout}>Logout</button>
         </div>
       </nav>
     </header>

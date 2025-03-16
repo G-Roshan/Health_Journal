@@ -11,7 +11,6 @@ import NewEntry from "./Components/NewEntry";
 import TrackMedication from "./Components/TrackMedication";
 import EmergencyContacts from "./Components/EmergencyContacts";
 import Bmi from "./Components/Bmi";
-import {UserProvider} from "./Components/UserContext";
 
 const Layout = ({ children, searchQuery, setSearchQuery }) => {
   const location = useLocation();
@@ -34,7 +33,6 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState(""); 
 
   return (
-    <UserProvider>
     <BrowserRouter>
       <Layout searchQuery={searchQuery} setSearchQuery={setSearchQuery}>
         <Routes>
@@ -51,7 +49,6 @@ const App = () => {
         </Routes>
       </Layout>
     </BrowserRouter>
-    </UserProvider>
   );
 };
 

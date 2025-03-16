@@ -3,7 +3,6 @@ const mdb = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
-const multer=require("multer");
 
 const Signup = require("./model1/signupSchema");
 const SymptomCard =require("./model1/symptomsSchema");
@@ -28,8 +27,7 @@ mdb
     console.log("Check your connection string", err);
   });
 
-  const storage = multer.memoryStorage();
-  const upload = multer({ storage });
+  
 
 app.get("/",(req, res) => {
   res.send("<h1>Welcome to backend</h1>");
@@ -40,7 +38,7 @@ app.get("/",(req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
-    const { name, email, password, phoneNumber } = req.body;
+    const {name, email, password, phoneNumber } = req.body;
     if (!name || !email || !password || !phoneNumber) {
       return res.status(400).json({ message: "All fields are required", isSignUp: false });
     }
@@ -116,13 +114,13 @@ app.post("/login", async (req, res) => {
 app.post("/addsymptomcard", async (req, res) => {
   
   try {
-    const {symptom, severity, duration, notes} = req.body;
+    const { userid,symptom, severity, duration, notes} = req.body;
 
-    if (!symptom || !severity || !duration) {
+    if (! userid||!symptom || !severity || !duration) {
       return res.status(400).json({ message: "Please fill the details" });
     }
 
-      const newSymptomEntry = new SymptomCard({symptom, severity, duration, notes });
+      const newSymptomEntry = new SymptomCard({ userid,symptom, severity, duration, notes });
       await newSymptomEntry.save();
       res.status(201).json({ message: "Symptom added successfully", entry: newSymptomEntry });
   } catch (error) {
@@ -131,9 +129,10 @@ app.post("/addsymptomcard", async (req, res) => {
   }
 });
 
-app.get("/getsymptomscards", async (req, res) => {
+app.get("/getsymptomscards/: userid", async (req, res) => {
   try {
-    const symptoms = await SymptomCard.find();
+    const { userid } = req.params;
+    const symptoms = await SymptomCard.find({userid});
     if (symptoms.length === 0) {
       return res.status(404).json({ message: "No symptoms found for this user" });
     }
@@ -150,13 +149,13 @@ app.get("/getsymptomscards", async (req, res) => {
 app.post("/addhistorycard", async (req, res) => {
   
   try {
-    const {text, reason, date,image} = req.body;
+    const { userid,text, reason, date,image} = req.body;
 
-    if (!text || !reason || !date||!image) {
+    if (!userid || !text || !reason || !date||!image) {
       return res.status(400).json({ message: "Please fill all the details" });
     }
       
-      const newHistoryEntry = new HistoryCard({text, reason, date, image});
+      const newHistoryEntry = new HistoryCard({ userid ,text, reason, date, image});
       await newHistoryEntry.save();
       res.status(201).json({ message: "Medical history added successfully", entry: newHistoryEntry });
   } catch (error) {
@@ -167,7 +166,8 @@ app.post("/addhistorycard", async (req, res) => {
 
 app.get("/gethistorycards", async (req, res) => {
   try {
-    const history = await HistoryCard.find();
+    const { userid } = req.params;
+    const history = await HistoryCard.find({userid});
     if (history.length === 0) {
       return res.status(404).json({ message: "No history found for this user" });
     }
@@ -184,13 +184,13 @@ app.get("/gethistorycards", async (req, res) => {
 app.post("/addappointmentcard", async (req, res) => {
   
   try {
-    const {hospital,date,reason} = req.body;
+    const {userid,hospital,date,reason} = req.body;
 
-    if (!hospital||!date) {
+    if (!userid||!hospital||!date) {
       return res.status(400).json({ message: "Please fill the details" });
     }
 
-      const newAppointmentEntry = new AppointmentCard({hospital,date,reason });
+      const newAppointmentEntry = new AppointmentCard({useridhospital,date,reason });
       await newAppointmentEntry.save();
       res.status(201).json({ message: "Appointments added successfully", entry: newAppointmentEntry });
   } catch (error) {
@@ -201,7 +201,8 @@ app.post("/addappointmentcard", async (req, res) => {
 
 app.get("/getappointmentscards", async (req, res) => {
   try {
-    const appointments = await AppointmentCard.find();
+    const { userid } = req.params;
+    const appointments = await AppointmentCard.find({userid});
     if (appointments.length === 0) {
       return res.status(404).json({ message: "No appointments found for this user" });
     }

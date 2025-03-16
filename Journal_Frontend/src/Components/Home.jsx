@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import {
   FaPhoneAlt,
   FaPlusCircle,
   FaNotesMedical,
   FaBalanceScale,
+  FaSignOutAlt
 } from "react-icons/fa";
+import axios from "axios";
 import "./css/Home.css";
 const healthTips = [
   "Stay hydrated! Drinking 8 glasses of water daily boosts metabolism. 💧",
@@ -17,11 +19,40 @@ const healthTips = [
 
 const Home = () => {
   const [dailyTip, setDailyTip] = useState("");
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userid");
 
   useEffect(() => {
     const tip = healthTips[Math.floor(Math.random() * healthTips.length)];
     setDailyTip(tip);
   }, []);
+
+  useEffect(() => {
+    if (!userId) {
+      navigate("/");
+      return;
+    }
+    
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/user/${userId}`
+        );
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem("userid");
+          navigate("/");
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [userId,navigate]);
+
+  
 
   return (
     <div>
@@ -29,7 +60,7 @@ const Home = () => {
         <div className="home">
           <div className="home-text">
             <h1>
-              Welcome to <span className="medimap-text">MediMap</span>
+              Welcome, {user ? user.name : "User"} to <span className="medimap-text">MediMap</span>
             </h1>
             <p>
               Your personal health tracker for symptoms, history, and

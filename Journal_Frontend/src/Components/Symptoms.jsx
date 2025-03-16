@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./css/Symptoms.css";
 import { IoMdClose, IoMdDoneAll } from "react-icons/io";
-import {useUser} from "../Components/UserContext";
 
 const Symptoms = ({ searchQuery }) => {
-  const{user}=useUser();
   const [symptom, setSymptom] = useState("");
   const [severity, setSeverity] = useState("Mild");
   const [duration, setDuration] = useState("");
