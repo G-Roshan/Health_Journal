@@ -12,22 +12,28 @@ const Login = () => {
   const navigate=useNavigate();
   const [email,setEmail]=useState("");
   const [password,setPass]=useState("");
+
+  
   const handleLogin=async(event)=>{
     event.preventDefault()
-    const req=await axios.post("https://health-journal.onrender.com/login",{
-       email,
-       password
-    })
-    const message=req.data.message
-    const loggedin=req.data.isLoggedin
-    if(loggedin){
-        alert(message)
-        navigate("/home")
-    }else{
-        alert(message)
-        navigate("/signup")
+    try{
+       const req=await axios.post("https://health-journal.onrender.com/login",{
+         email,
+         password
+       })
+       const message=req.data.message
+       const loggedin=req.data.isLoggedin
+       if(loggedin){
+         navigate("/home")
+       }else{
+          navigate("/signup")
+       }
+    }catch (error) {
+      console.error("Login Error:", error);
+      alert("Login failed. Please try again.");
     }
-}
+  };
+
   return (
     <div className="login-container">
       <form onSubmit={handleLogin}>

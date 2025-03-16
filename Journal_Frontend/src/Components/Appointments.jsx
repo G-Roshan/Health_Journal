@@ -7,7 +7,6 @@ const Appointments = ({ searchQuery }) => {
   const [hospital, setHospital] = useState("");
   const [date, setDate] = useState("");
   const [reason, setReason] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
 
@@ -21,15 +20,12 @@ const Appointments = ({ searchQuery }) => {
     };
 
     setList([...list, data]);
-    setSubmitted(true);
     setShow(false);
     setHospital("");
     setDate("");
     setReason("");
 
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 1000);
+    
   };
   const filteredList = list.filter((item) =>
     item.hospital.toLowerCase().includes(searchQuery.toLowerCase())

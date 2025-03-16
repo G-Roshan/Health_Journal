@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./css/Symptoms.css";
 import { IoMdClose, IoMdDoneAll } from "react-icons/io";
 
@@ -11,28 +12,49 @@ const Symptoms = ({ searchQuery }) => {
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
 
-  const handleSubmit = (e) => {
+  
+
+  const fetchSymptoms = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/getsymptomscards");
+      setList(response.data);
+    } catch (error) {
+      console.error("Error fetching symptoms:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSymptoms();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const data = {
       symptom,
       severity,
-      duration,
-      notes,
-      date: new Date().toLocaleString(),
+      duration: Number(duration), 
+      notes
     };
 
-    setList((prevList) => [...prevList, data]);
-    setSubmitted(true);
-    setShow(false);
-    setSymptom("");
-    setSeverity("Mild");
-    setDuration("");
-    setNotes("");
+    try {
+      const response = await axios.post("http://localhost:5000/addsymptomcard", data);
+      fetchSymptoms(); 
+      setSubmitted(true);
+      setShow(false);
+      setSymptom("");
+      setSeverity("Mild");
+      setDuration("");
+      setNotes("");
 
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 1000);
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Error adding symptom:", error);
+    }
   };
+
   const filteredList = list.filter((item) =>
     item.symptom.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -40,7 +62,7 @@ const Symptoms = ({ searchQuery }) => {
   return (
     <div className="symptoms-container">
       <h2>Symptom Logs</h2>
-      <button onClick={() => setShow(true)} className="add-btn">
+      <button onClick={() => setShow(true)} className="symptoms-add-btn">
         Add New Symptom
       </button>
 
@@ -48,8 +70,8 @@ const Symptoms = ({ searchQuery }) => {
         {filteredList.length === 0 ? (
           <p>No symptoms logged yet.</p>
         ) : (
-          filteredList.map((item, index) => (
-            <div key={index} className="symptom-card">
+          filteredList.map((item) => (
+            <div key={item._id} className="symptom-card">
               <h3>{item.symptom}</h3>
               <p><strong>Severity:</strong> {item.severity}</p>
               <p><strong>Duration:</strong> {item.duration} days</p>
@@ -61,14 +83,14 @@ const Symptoms = ({ searchQuery }) => {
       </div>
 
       {show && (
-        <div className="form-popup">
-          <div className="form-container">
-            <button className="close-btn" onClick={() => setShow(false)}>
+        <div className="symptoms-form-popup">
+          <div className="symptoms-form-container">
+            <button className="symptoms-close-btn" onClick={() => setShow(false)}>
               <IoMdClose />
             </button>
             <h2>Log Your Symptoms</h2>
             {submitted && (
-              <p className="success-message">
+              <p className="symptoms-success-message">
                 Symptom logged successfully! <IoMdDoneAll />
               </p>
             )}
@@ -89,10 +111,10 @@ const Symptoms = ({ searchQuery }) => {
                 <option value="Severe">Severe</option>
               </select>
               <input
-                type="text"
+                type="number"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                placeholder="Since when"
+                placeholder="Duration in days"
                 required
               />
               <textarea
@@ -100,7 +122,7 @@ const Symptoms = ({ searchQuery }) => {
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Additional Information"
               ></textarea>
-              <button type="submit" className="log-btn">
+              <button type="submit" className="symptoms-log-btn">
                 Log Symptom
               </button>
             </form>
@@ -112,6 +134,9 @@ const Symptoms = ({ searchQuery }) => {
 };
 
 export default Symptoms;
+
+
+
 
 
 

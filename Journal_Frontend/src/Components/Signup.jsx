@@ -12,8 +12,7 @@ import { useState } from "react";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [firstName, setFN] = useState("");
-  const [lastName, setLN] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
   const [phoneNumber, setPN] = useState(0);
@@ -21,8 +20,7 @@ const Signup = () => {
   const handleSignup = async (event) => {
     event.preventDefault();
       const req=await axios.post("https://health-journal.onrender.com/signup",{
-        firstName:firstName,
-        lastName:lastName,
+        name:name,
         email:email,
         password:password,
         phoneNumber:phoneNumber
@@ -50,21 +48,10 @@ const Signup = () => {
             <MdOutlineDriveFileRenameOutline className="input1-icon" />
             <input
               type="text"
-              id="firstName"
-              value={firstName}
-              onChange={(e) => setFN(e.target.value)}
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Enter your Firstname"
-              required
-            />
-          </div>
-          <div className="signup-wrapper">
-            <MdOutlineDriveFileRenameOutline className="input1-icon" />
-            <input
-              type="text"
-              id="lastName"
-              value={lastName}
-              onChange={(e) => setLN(e.target.value)}
-              placeholder="Enter your Lastname"
               required
             />
           </div>
@@ -99,7 +86,6 @@ const Signup = () => {
               value={phoneNumber}
               onChange={(e) => setPN(e.target.value)}
               placeholder="Enter your phone number"
-              pattern="[0-9]{10}"
               required
             />
           </div>

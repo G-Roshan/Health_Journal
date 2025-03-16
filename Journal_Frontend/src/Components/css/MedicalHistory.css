@@ -1,151 +1,149 @@
 .history-container {
-    padding: 20px;
-    margin-top: 80px;
-    text-align: center;
-  }
-  
-  .history-container h2 {
-    color: #002B5B;
-    margin-bottom: 60px;
-  }
-  
+  padding: 20px;
+  margin-top: 80px;
+  text-align: center;
+}
+
+.history-container h2 {
+  color: #002b5b;
+  margin-bottom: 60px;
+}
+
+.add-btn {
+  position: absolute;
+  top: 170px;
+  right: 100px;
+  background: #0099cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-btn:hover {
+  background: #0077b6;
+}
+
+.records-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.record-card {
+  background: #f0f8ff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  word-wrap: break-word;
+  text-align: left;
+}
+
+.record-card p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.record-image {
+  width: 100%;
+  max-height: 150px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  max-height: 90vh;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: black;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.log-btn {
+  background: #0099cc;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 20px;
+}
+
+.log-btn:hover {
+  background: #0077b6;
+}
+
+.zoom-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.zoomed-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
   .add-btn {
-    position: absolute;
-    top: 170px;
-    right: 100px;
-    background: #0099cc;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .add-btn:hover {
-    background: #0077B6;
-  }
-  
-  .records-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .record-card {
-    background: #f0f8ff;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    text-align: left;
-  }
-  
-  .record-card p {
-    margin: 5px 0;
+    top: 430px;
+    right: 50px;
     font-size: 14px;
+    padding: 10px 10px;
   }
-  
-  .record-image {
-    width: 100%;
-    max-height: 150px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .form-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
+
   .form-container {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 400px;
-    max-height: 90vh;
-    position: relative;
+    width: 90%;
+    max-width: 300px;
   }
-  
-  
-  .close-btn {
-    position: absolute;
-    top: 30px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    color: black;
+}
+@media (max-width: 500px) {
+  .add-btn {
+    top: 480px;
+    right: 140px;
   }
-  
-  input,
-  select,
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-  
-  .log-btn {
-    background: #0099cc;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 3px;
-    margin-top: 20px;
-  }
-  
-  .log-btn:hover {
-    background: #0077B6;
-  }
-  
-  .zoom-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .zoomed-image {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 10px;
-  }
-  
-  @media (max-width: 768px) {
-    .add-btn {
-      top: 430px;
-      right: 50px;
-      font-size: 14px;
-      padding: 10px 10px;
-    }
-  
-    .form-container {
-      width: 90%;
-      max-width: 300px;
-    }
-  }
-  @media (max-width: 500px){
-    .add-btn{
-        top:480px;
-        right: 140px;
-    }
-  } 
-  
-  
+}

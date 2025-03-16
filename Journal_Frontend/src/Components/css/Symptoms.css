@@ -7,7 +7,7 @@
   color: #002b5b;
   margin-bottom: 50px;
 }
-.add-btn {
+.symptoms-add-btn {
   position: absolute;
   top: 170px;
   right: 100px;
@@ -19,7 +19,7 @@
   cursor: pointer;
   border-radius: 5px;
 }
-.add-btn:hover {
+.symtpoms-add-btn:hover {
   background: #0077b6;
 }
 .symptoms-grid {
@@ -34,14 +34,13 @@
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
+  text-align: left;
 }
 .symptom-card h3 {
   color: #007bff;
   margin: 0 0 5px;
 }
-.form-container {
+.symptoms-form-container {
   background: white;
   padding: 30px;
   border-radius: 10px;
@@ -49,7 +48,7 @@
   max-height: 90vh;
   position: relative;
 }
-.form-popup {
+.symptoms-form-popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -60,7 +59,7 @@
   justify-content: center;
   align-items: center;
 }
-.close-btn {
+.symptoms-close-btn {
   position: absolute;
   top: 35px;
   right: 30px;
@@ -70,19 +69,19 @@
   cursor: pointer;
   color: black;
 }
-input,
-select,
-textarea {
+.symptoms-form-container input,
+.symptoms-form-container select,
+.symptoms-form-container textarea {
   width: 100%;
   padding: 10px;
   margin: 5px 0;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
-select {
+.symptoms-form-container select {
   width: 105%;
 }
-.log-btn {
+.symptoms-log-btn {
   background: #0099cc;
   color: white;
   border: none;
@@ -91,21 +90,21 @@ select {
   border-radius: 3px;
   margin-top: 30px;
 }
-.log-btn:hover {
+.symptoms-log-btn:hover {
   background: #0077b6;
 }
 
 @media (max-width: 768px) {
-  .add-btn {
+  .symptoms-add-btn {
     position: absolute;
-    top: 425px;
-    right: 20px;
+    top: 400px;
+    right: 30px;
     font-size: 14px;
     padding: 8px 12px;
   }
 }
 @media (max-width: 480px) {
-  .add-btn {
+  .symptoms-add-btn {
     top: 480px;
     right: 130px;
     font-size: 12px;

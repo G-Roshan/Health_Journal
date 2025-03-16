@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./css/MedicalHistory.css";
 import { IoMdClose } from "react-icons/io";
+import axios from "axios";
 
 const MedicalHistory = ({ searchQuery }) => {
   const [records, setRecords] = useState([]);
@@ -10,8 +11,25 @@ const MedicalHistory = ({ searchQuery }) => {
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(false);
   const [zoom, setZoom] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleAddRecord = () => {
+  const fetchSymptoms = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/gethistorycards");
+      setRecords(response.data);
+    } catch (error) {
+      console.error("Error fetching symptoms:", error);
+    }
+  };
+
+  useEffect(() => {
+      fetchSymptoms();
+    }, []);
+  
+    
+
+  const handleAddRecord = async (e) => {
+    e.preventDefault();
     if (!text && !image) {
       alert("Please enter text or upload an image.");
       return;
@@ -23,21 +41,30 @@ const MedicalHistory = ({ searchQuery }) => {
       date,
       image: image ? URL.createObjectURL(image) : null,
     };
-    setRecords([...records, newRecord]);
     if (image) {
       URL.revokeObjectURL(image);
     }
+    try{
+       const response = await axios.post("http://localhost:5000/addhistorycard", newRecord);
+       fetchSymptoms();
+       setText("");
+       setReason("");
+       setDate("");
+       setImage(null);
+       setShow(false);
+       setSubmitted(true);
+       document.getElementById("historyImage").value = "";
 
-    setText("");
-    setReason("");
-    setDate("");
-    setImage(null);
-    setShow(false);
-    document.getElementById("historyImage").value = "";
+      setTimeout(() => {
+         setSubmitted(false);
+      }, 1000);
+    }catch(error){
+      console.error("Error adding symptom:", error);
+    }
   };
-  const filteredList = records.filter((item) =>
-    item.text.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    const filteredList = records.filter((item) =>
+       item.text.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   
   return (
     <div>

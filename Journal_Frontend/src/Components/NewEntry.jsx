@@ -5,7 +5,6 @@ import { IoMdClose } from "react-icons/io";
 const NewEntry = ({searchQuery}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
 
@@ -18,14 +17,9 @@ const NewEntry = ({searchQuery}) => {
     };
 
     setList([...list, data]);
-    setSubmitted(true);
     setShow(false);
     setTitle("");
     setDescription("");
-
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 1000);
     
   };
   const filteredList = list.filter((item) =>
