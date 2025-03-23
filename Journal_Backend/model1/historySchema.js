@@ -9,3 +9,5 @@ const HistoryCard = mdb.model("HistoryCard", historySchema);
 module.exports = HistoryCard;
 
 
+
+

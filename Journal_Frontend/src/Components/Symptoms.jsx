@@ -75,7 +75,6 @@ const Symptoms = ({ searchQuery }) => {
               <p><strong>Severity:</strong> {item.severity}</p>
               <p><strong>Duration:</strong> {item.duration} days</p>
               <p><strong>Notes:</strong> {item.notes || "None"}</p>
-              <p><small>Logged on: {item.date}</small></p>
             </div>
           ))
         )}

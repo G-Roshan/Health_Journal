@@ -11,10 +11,11 @@ const SymptomCard =require("./model1/symptomsSchema");
 const HistoryCard=require("./model1/historySchema");
 const AppointmentCard=require("./model1/appointmentsSchema");
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static( 'uploads'));
 
 const PORT = 5000;
 dotenv.config();
@@ -27,7 +28,14 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, 
+  fileFilter: (req, file, cb) => {
+    const allowed = /jpeg|jpg|png/;
+    const ext = allowed.test(path.extname(file.originalname).toLowerCase());
+    const mime = allowed.test(file.mimetype);
+    if (ext && mime) cb(null, true);
+    else cb('Error: Only images allowed!');} });
 
 mdb
   
@@ -148,7 +156,7 @@ app.get("/getsymptomscards", async (req, res) => {
 app.post('/addhistorycard', upload.single('image'), async (req, res) => {
   try {
     const { text, reason, date } = req.body;
-    const imagePath = req.file ? req.file.path : null;
+    const imagePath = req.file ? `uploads/${req.file.filename}` : null;
 
     if (!text || !reason || !date || !imagePath) {
       return res.status(400).json({ message: 'Please fill all the details' });

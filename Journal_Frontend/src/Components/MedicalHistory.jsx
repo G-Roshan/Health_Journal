@@ -64,7 +64,9 @@ const MedicalHistory = ({ searchQuery }) => {
     }
   };
     const filteredList = records.filter((item) =>
-       item.text.toLowerCase().includes(searchQuery.toLowerCase())
+      item.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.reason.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.date.includes(searchQuery)
     );
   
   return (
