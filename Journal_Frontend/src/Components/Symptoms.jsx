@@ -12,9 +12,8 @@ const Symptoms = ({ searchQuery }) => {
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
 
-  
-
   const fetchSymptoms = async () => {
+    
     try {
       const response = await axios.get("https://health-journal.onrender.com/getsymptomscards");
       setList(response.data);
@@ -33,7 +32,7 @@ const Symptoms = ({ searchQuery }) => {
     const data = {
       symptom,
       severity,
-      duration: Number(duration), 
+      duration, 
       notes
     };
 

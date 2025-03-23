@@ -35,31 +35,32 @@ const MedicalHistory = ({ searchQuery }) => {
       return;
     }
 
-    const newRecord = {
-      text,
-      reason,
-      date,
-      image: image ? URL.createObjectURL(image) : null,
-    };
+    const formData = new FormData();
+    formData.append('text', text);
+    formData.append('reason', reason);
+    formData.append('date', date);
     if (image) {
-      URL.revokeObjectURL(image);
+      formData.append('image', image);
     }
-    try{
-       const response = await axios.post("https://health-journal.onrender.com/addhistorycard", newRecord);
-       fetchSymptoms();
-       setText("");
-       setReason("");
-       setDate("");
-       setImage(null);
-       setShow(false);
-       setSubmitted(true);
-       document.getElementById("historyImage").value = "";
-
+  
+    try {
+      await axios.post("https://health-journal.onrender.com/addhistorycard", formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      fetchSymptoms();
+      setText("");
+      setReason("");
+      setDate("");
+      setImage(null);
+      setShow(false);
+      setSubmitted(true);
+      document.getElementById("historyImage").value = "";
+  
       setTimeout(() => {
-         setSubmitted(false);
+        setSubmitted(false);
       }, 1000);
-    }catch(error){
-      console.error("Error adding symptom:", error);
+    } catch (error) {
+      console.error("Error adding history:", error);
     }
   };
     const filteredList = records.filter((item) =>
@@ -126,25 +127,26 @@ const MedicalHistory = ({ searchQuery }) => {
                 <strong>Reason:</strong> {record.reason}
               </p>
               {record.image && (
-                <img
-                  src={record.image}
-                  alt="Medical Record"
-                  onClick={() => setZoom(record.image)}
-                  className="record-image"
-                />
-              )}
+  <img
+    src={`https://health-journal.onrender.com/${record.image}`}
+    alt="Medical Record"
+    onClick={() => setZoom(`https://health-journal.onrender.com/${record.image}`)}
+    className="record-image"
+  />
+)}
             </div>
           ))}
         </div>
         {zoom && (
-          <div className="zoom-popup" onClick={() => setZoom(null)}>
-            <img
-              src={zoom}
-              alt="Zoomed Medical Record"
-              className="zoomed-image"
-            />
-          </div>
-        )}
+  <div className="zoom-popup" onClick={() => setZoom(null)}>
+    <img
+      src={zoom}
+      alt="Zoomed Medical Record"
+      className="zoomed-image"
+    />
+  </div>
+)}
+
       </div>
     </div>
   );

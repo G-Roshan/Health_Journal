@@ -12,7 +12,7 @@ const Appointments = ({ searchQuery }) => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/getappointmentscards");
+      const response = await axios.get("https://health-journal.onrender.com/getappointmentscards");
       setList(response.data);
     } catch (error) {
       console.error("Error fetching symptoms:", error);
@@ -32,7 +32,7 @@ const Appointments = ({ searchQuery }) => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/addappointmentcard", data);
+      const response = await axios.post("https://health-journal.onrender.com/addappointmentcard", data);
       fetchAppointments(); 
       setShow(false);
     setHospital("");

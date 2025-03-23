@@ -5,6 +5,7 @@ const appointmentsSchema=mdb.Schema(
      hospital:String,
      date:String,
      reason:String,
+    
    }
 )
 

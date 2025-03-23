@@ -13,27 +13,25 @@ const Login = () => {
   const [email,setEmail]=useState("");
   const [password,setPass]=useState("");
   
-  const handleLogin=async(event)=>{
-    event.preventDefault()
-    try{
-       const req=await axios.post("https://health-journal.onrender.com/login",{
-         email,
-         password
-       })
-       const loggedin=req.data.isLoggedin
-       if(loggedin){
-        const userId = req.data.userid; 
-        localStorage.setItem("userid", userId);
-         navigate("/home")
-       }else{
-          alert("Invalid credentials. Please check your email and password.");
-          
-       }
-    }catch (error) {
-      console.error("Login Error:", error);
-      alert("Login failed. Please try again.");
-    }
+  const handleLogin = async (event) => {
+    event.preventDefault();
+      const req = await axios.post("https://health-journal.onrender.com/login", {
+        email,
+        password,
+      });
+      
+      const message=req.data.message;
+      const loggedin = req.data.isLoggedin;
+      if (loggedin) {
+        alert(message);
+        navigate("/home");
+        
+      } else {
+        alert("Invalid credentials. Please check your email and password.");
+      }
+    
   };
+  
 
   return (
     <div className="login-container">

@@ -2,7 +2,9 @@ const express = require("express");
 const mdb = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
+const multer = require('multer');
 const cors = require("cors");
+const path = require('path');
 
 const Signup = require("./model1/signupSchema");
 const SymptomCard =require("./model1/symptomsSchema");
@@ -12,10 +14,20 @@ const AppointmentCard=require("./model1/appointmentsSchema");
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = 5000;
 dotenv.config();
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage: storage });
 
 mdb
   
@@ -38,33 +50,22 @@ app.get("/",(req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
-    const {name, email, password, phoneNumber } = req.body;
-    if (!name || !email || !password || !phoneNumber) {
-      return res.status(400).json({ message: "All fields are required", isSignUp: false });
-    }
-    const existingUser = await Signup.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists", isSignUp: false });
-    }
-
+    const { firstName, lastName, email, password, phoneNumber } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10); 
- 
-    const newUser = new Signup({
-      name: name,
+    const newSignup = new Signup({
+      firstName: firstName,
+      lastName: lastName,
       phoneNumber: phoneNumber,
       password: hashedPassword,
       email: email,
     });
-    await newUser.save();
-    console.log("Signup successful");
+    await newSignup.save();
     res.status(201).json({ message: "Signup Successful", isSignUp: true });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Signup Unsuccessful", isSignUp: false });
   }
 });
-
-
 
 
 // app.get("/getsignupdet",  async (req, res) => {
@@ -76,7 +77,7 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const existingUser = await Signup.findOne({ email});
+    const existingUser = await Signup.findOne({ email:email});
     
     if (existingUser) {
 
@@ -90,7 +91,6 @@ app.post("/login", async (req, res) => {
           .json({
             message: "Login successful",
             isLoggedin: true,
-            userid: existingUser._id
           });
       } else {
         res
@@ -114,13 +114,13 @@ app.post("/login", async (req, res) => {
 app.post("/addsymptomcard", async (req, res) => {
   
   try {
-    const { userid,symptom, severity, duration, notes} = req.body;
+    const { symptom, severity, duration, notes} = req.body;
 
-    if (! userid||!symptom || !severity || !duration) {
+    if (!symptom || !severity || !duration) {
       return res.status(400).json({ message: "Please fill the details" });
     }
 
-      const newSymptomEntry = new SymptomCard({ userid,symptom, severity, duration, notes });
+      const newSymptomEntry = new SymptomCard({ symptom, severity, duration, notes });
       await newSymptomEntry.save();
       res.status(201).json({ message: "Symptom added successfully", entry: newSymptomEntry });
   } catch (error) {
@@ -129,10 +129,9 @@ app.post("/addsymptomcard", async (req, res) => {
   }
 });
 
-app.get("/getsymptomscards/: userid", async (req, res) => {
+app.get("/getsymptomscards", async (req, res) => {
   try {
-    const { userid } = req.params;
-    const symptoms = await SymptomCard.find({userid});
+    const symptoms = await SymptomCard.find();
     if (symptoms.length === 0) {
       return res.status(404).json({ message: "No symptoms found for this user" });
     }
@@ -146,37 +145,37 @@ app.get("/getsymptomscards/: userid", async (req, res) => {
 
 //-----------------------------Medical History----------------------------------------
 
-app.post("/addhistorycard", async (req, res) => {
-  
+app.post('/addhistorycard', upload.single('image'), async (req, res) => {
   try {
-    const { userid,text, reason, date,image} = req.body;
+    const { text, reason, date } = req.body;
+    const imagePath = req.file ? req.file.path : null;
 
-    if (!userid || !text || !reason || !date||!image) {
-      return res.status(400).json({ message: "Please fill all the details" });
+    if (!text || !reason || !date || !imagePath) {
+      return res.status(400).json({ message: 'Please fill all the details' });
     }
-      
-      const newHistoryEntry = new HistoryCard({ userid ,text, reason, date, image});
-      await newHistoryEntry.save();
-      res.status(201).json({ message: "Medical history added successfully", entry: newHistoryEntry });
+
+    const newHistoryEntry = new HistoryCard({
+      text,
+      reason,
+      date,
+      image: imagePath,
+    });
+    await newHistoryEntry.save();
+    res.status(201).json({ message: 'Medical history added successfully', entry: newHistoryEntry });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server error" });
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-app.get("/gethistorycards", async (req, res) => {
+app.get('/gethistorycards', async (req, res) => {
   try {
-    const { userid } = req.params;
-    const history = await HistoryCard.find({userid});
-    if (history.length === 0) {
-      return res.status(404).json({ message: "No history found for this user" });
-    }
-
+    const history = await HistoryCard.find();
     res.status(200).json(history);
-} catch (error) {
+  } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
-}
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 //---------------------------------------------Appointments---------------------------------------------------
@@ -184,13 +183,13 @@ app.get("/gethistorycards", async (req, res) => {
 app.post("/addappointmentcard", async (req, res) => {
   
   try {
-    const {userid,hospital,date,reason} = req.body;
+    const {hospital,date,reason} = req.body;
 
-    if (!userid||!hospital||!date) {
+    if (!hospital||!date) {
       return res.status(400).json({ message: "Please fill the details" });
     }
 
-      const newAppointmentEntry = new AppointmentCard({useridhospital,date,reason });
+      const newAppointmentEntry = new AppointmentCard({hospital,date,reason });
       await newAppointmentEntry.save();
       res.status(201).json({ message: "Appointments added successfully", entry: newAppointmentEntry });
   } catch (error) {
@@ -201,8 +200,7 @@ app.post("/addappointmentcard", async (req, res) => {
 
 app.get("/getappointmentscards", async (req, res) => {
   try {
-    const { userid } = req.params;
-    const appointments = await AppointmentCard.find({userid});
+    const appointments = await AppointmentCard.find();
     if (appointments.length === 0) {
       return res.status(404).json({ message: "No appointments found for this user" });
     }

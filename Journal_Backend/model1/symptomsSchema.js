@@ -5,6 +5,7 @@ const symptomsSchema=mdb.Schema({
     severity:String,
     duration:Number,
     notes:String,
+   
 })
 
 const SymptomCard = mdb.model("SymptomCard",symptomsSchema)
