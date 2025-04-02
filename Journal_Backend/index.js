@@ -2,9 +2,10 @@ const express = require("express");
 const mdb = require("mongoose");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
-const multer = require('multer');
 const cors = require("cors");
-const path = require('path');
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 const Signup = require("./model1/signupSchema");
 const SymptomCard =require("./model1/symptomsSchema");
@@ -14,32 +15,16 @@ const AppointmentCard=require("./model1/appointmentsSchema");
 
 const app = express();
 app.use(cors());
-app.use(express.json());
-app.use('/uploads', express.static( 'uploads'));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 const PORT = 5000;
 dotenv.config();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-const upload = multer({ storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, 
-  fileFilter: (req, file, cb) => {
-    const allowed = /jpeg|jpg|png/;
-    const ext = allowed.test(path.extname(file.originalname).toLowerCase());
-    const mime = allowed.test(file.mimetype);
-    if (ext && mime) cb(null, true);
-    else cb('Error: Only images allowed!');} });
 
 mdb
   
-  .connect(process.env.MONGODB_URL)
+  .connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("MDB Connection successfull");
   })
@@ -47,7 +32,13 @@ mdb
     console.log("Check your connection string", err);
   });
 
-  
+  const storage = multer.diskStorage({
+    destination: "uploads/",
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  });
+  const upload = multer({ storage });
 
 app.get("/",(req, res) => {
   res.send("<h1>Welcome to backend</h1>");
@@ -153,38 +144,49 @@ app.get("/getsymptomscards", async (req, res) => {
 
 //-----------------------------Medical History----------------------------------------
 
-app.post('/addhistorycard', upload.single('image'), async (req, res) => {
+// Route to fetch medical history
+app.get("/gethistorycards", async (req, res) => {
+  try {
+    const records = await HistoryCard.find();
+    res.status(200).json(records);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching records", error });
+  }
+});
+
+// Route to add medical history
+app.post("/addhistorycard", upload.single("image"), async (req, res) => {
   try {
     const { text, reason, date } = req.body;
-    const imagePath = req.file ? `uploads/${req.file.filename}` : null;
-
-    if (!text || !reason || !date || !imagePath) {
-      return res.status(400).json({ message: 'Please fill all the details' });
+    let imagePath = null;
+    if (req.file) {
+      imagePath = req.file.path;
     }
 
-    const newHistoryEntry = new HistoryCard({
-      text,
-      reason,
-      date,
-      image: imagePath,
-    });
-    await newHistoryEntry.save();
-    res.status(201).json({ message: 'Medical history added successfully', entry: newHistoryEntry });
+    const newRecord = new HistoryCard({ text, reason, date, image: imagePath });
+    await newRecord.save();
+    res.status(201).json({ message: "Record added successfully", newRecord });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Error adding record", error });
   }
 });
 
-app.get('/gethistorycards', async (req, res) => {
+// Route to upload medical history image
+app.post("/uploadmedicalimage", async (req, res) => {
   try {
-    const history = await HistoryCard.find();
-    res.status(200).json(history);
+    const { image } = req.body;
+    if (!image) return res.status(400).json({ message: "No image provided" });
+
+    const buffer = Buffer.from(image.split(",")[1], "base64");
+    const filePath = path.join(__dirname, "uploads", `medical_${Date.now()}.png`);
+    fs.writeFileSync(filePath, buffer);
+
+    res.status(201).json({ message: "Image uploaded successfully", imageUrl: filePath });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Error uploading image", error });
   }
 });
+
 
 //---------------------------------------------Appointments---------------------------------------------------
 

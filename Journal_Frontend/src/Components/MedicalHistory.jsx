@@ -3,7 +3,11 @@ import "./css/MedicalHistory.css";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 
+import html2canvas from "html2canvas";
+
 const MedicalHistory = ({ searchQuery }) => {
+  const [imageUrl, setImageUrl] = useState(null);
+
   const [records, setRecords] = useState([]);
   const [text, setText] = useState("");
   const [reason, setReason] = useState("");
@@ -15,7 +19,7 @@ const MedicalHistory = ({ searchQuery }) => {
 
   const fetchSymptoms = async () => {
     try {
-      const response = await axios.get("https://health-journal.onrender.com/gethistorycards");
+      const response = await axios.get("http://localhost:5000/gethistorycards");
       setRecords(response.data);
     } catch (error) {
       console.error("Error fetching symptoms:", error);
@@ -35,38 +39,54 @@ const MedicalHistory = ({ searchQuery }) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('text', text);
-    formData.append('reason', reason);
-    formData.append('date', date);
+    const newRecord = {
+      text,
+      reason,
+      date,
+      image: image ? URL.createObjectURL(image) : null,
+    };
     if (image) {
-      formData.append('image', image);
+      URL.revokeObjectURL(image);
     }
-  
-    try {
-      await axios.post("https://health-journal.onrender.com/addhistorycard", formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      fetchSymptoms();
-      setText("");
-      setReason("");
-      setDate("");
-      setImage(null);
-      setShow(false);
-      setSubmitted(true);
-      document.getElementById("historyImage").value = "";
-  
+    try{
+       const response = await axios.post("http://localhost:5000/addhistorycard", newRecord);
+       fetchSymptoms();
+       setText("");
+       setReason("");
+       setDate("");
+       setImage(null);
+       setShow(false);
+       setSubmitted(true);
+       document.getElementById("historyImage").value = "";
+
       setTimeout(() => {
-        setSubmitted(false);
+         setSubmitted(false);
       }, 1000);
-    } catch (error) {
+    }catch(error){
       console.error("Error adding history:", error);
     }
   };
+
+  // Function to capture Medical History as an image
+  const captureMedicalHistory = async () => {
+    const historyElement = document.querySelector(".history-container");
+    if (!historyElement) return;
+
+    const canvas = await html2canvas(historyElement);
+    const imageBase64 = canvas.toDataURL("image/png");
+
+    // Upload image to backend
+    try {
+      const response = await axios.post("http://localhost:5000/uploadmedicalimage", { image: imageBase64 });
+      setImageUrl(response.data.imageUrl);
+      alert("Medical history image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+  
     const filteredList = records.filter((item) =>
-      item.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.reason.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.date.includes(searchQuery)
+       item.text.toLowerCase().includes(searchQuery.toLowerCase())
     );
   
   return (
@@ -129,29 +149,28 @@ const MedicalHistory = ({ searchQuery }) => {
                 <strong>Reason:</strong> {record.reason}
               </p>
               {record.image && (
-  <img
-    src={`https://health-journal.onrender.com/${record.image}`}
-    alt="Medical Record"
-    onClick={() => setZoom(`https://health-journal.onrender.com/${record.image}`)}
-    className="record-image"
-  />
-)}
+                <img
+                  src={record.image}
+                  alt="Medical Record"
+                  onClick={() => setZoom(record.image)}
+                  className="record-image"
+                />
+              )}
             </div>
           ))}
         </div>
         {zoom && (
-  <div className="zoom-popup" onClick={() => setZoom(null)}>
-    <img
-      src={zoom}
-      alt="Zoomed Medical Record"
-      className="zoomed-image"
-    />
-  </div>
-)}
-
+          <div className="zoom-popup" onClick={() => setZoom(null)}>
+            <img
+              src={zoom}
+              alt="Zoomed Medical Record"
+              className="zoomed-image"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default MedicalHistory;
+export default MedicalHistory;  
