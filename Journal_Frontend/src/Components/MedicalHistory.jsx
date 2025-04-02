@@ -19,7 +19,7 @@ const MedicalHistory = ({ searchQuery }) => {
 
   const fetchSymptoms = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/gethistorycards");
+      const response = await axios.get("https://health-journal.onrender.com/gethistorycards");
       setRecords(response.data);
     } catch (error) {
       console.error("Error fetching symptoms:", error);
@@ -49,7 +49,7 @@ const MedicalHistory = ({ searchQuery }) => {
       URL.revokeObjectURL(image);
     }
     try{
-       const response = await axios.post("http://localhost:5000/addhistorycard", newRecord);
+       const response = await axios.post("https://health-journal.onrender.com/addhistorycard", newRecord);
        fetchSymptoms();
        setText("");
        setReason("");
@@ -77,7 +77,7 @@ const MedicalHistory = ({ searchQuery }) => {
 
     // Upload image to backend
     try {
-      const response = await axios.post("http://localhost:5000/uploadmedicalimage", { image: imageBase64 });
+      const response = await axios.post("https://health-journal.onrender.com/uploadmedicalimage", { image: imageBase64 });
       setImageUrl(response.data.imageUrl);
       alert("Medical history image uploaded successfully!");
     } catch (error) {
