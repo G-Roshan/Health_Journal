@@ -5,40 +5,34 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
-
 const Signup = require("./model1/signupSchema");
 const SymptomCard =require("./model1/symptomsSchema");
-const HistoryCard=require("./model1/historySchema");
 const AppointmentCard=require("./model1/appointmentsSchema");
+
 
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use("/historyuploads", express.static(path.join(__dirname, "historyuploads")));
 
 const PORT = 5000;
 dotenv.config();
 
-
 mdb
   
-  .connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGODB_URL,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("MDB Connection successfull");
   })
   .catch((err) => {
     console.log("Check your connection string", err);
   });
-
-  const storage = multer.diskStorage({
-    destination: "uploads/",
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
-    },
-  });
-  const upload = multer({ storage });
+ 
 
 app.get("/",(req, res) => {
   res.send("<h1>Welcome to backend</h1>");
@@ -66,30 +60,26 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-
-// app.get("/getsignupdet",  async (req, res) => {
-//   const signup = await Signup.find();
-//   console.log(signup);
-//   res.send("Signup details fetched");
-// });
+//----------------------------------Login------------------------------------------------------
 
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const existingUser = await Signup.findOne({ email:email});
+    const existingUser = await Signup.findOne({ email});
     
     if (existingUser) {
-
       const isValidPassword = await bcrypt.compare(
         password,
         existingUser.password
       );
       if (isValidPassword) {
+        
         res
           .status(201)
           .json({
             message: "Login successful",
             isLoggedin: true,
+           
           });
       } else {
         res
@@ -144,49 +134,61 @@ app.get("/getsymptomscards", async (req, res) => {
 
 //-----------------------------Medical History----------------------------------------
 
-// Route to fetch medical history
+const historySchema = new mdb.Schema({
+  text: String,
+  reason: String,
+  date: String,
+  image: String, // Image path
+});
+
+const HistoryCard = mdb.model("HistoryCard", historySchema);
+
+// Ensure uploads directory exists
+const fs = require("fs");
+const uploadDir = path.join(__dirname, "historyuploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Multer Storage Setup for Image Upload
+const storage = multer.diskStorage({
+  destination: uploadDir,
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage: storage });
+
+// API to Add Medical History with Image
+
 app.get("/gethistorycards", async (req, res) => {
   try {
     const records = await HistoryCard.find();
-    res.status(200).json(records);
+    res.json(records);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching records", error });
+    res.status(500).json({ error: "Error fetching medical records." });
   }
 });
 
-// Route to add medical history
+// API to Add Medical History with Image
 app.post("/addhistorycard", upload.single("image"), async (req, res) => {
   try {
     const { text, reason, date } = req.body;
-    let imagePath = null;
-    if (req.file) {
-      imagePath = req.file.path;
-    }
+    const imagePath = req.file ? `/historyuploads/${req.file.filename}` : "";
 
-    const newRecord = new HistoryCard({ text, reason, date, image: imagePath });
+    const newRecord = new HistoryCard({
+      text,
+      reason,
+      date,
+      image: imagePath,
+    });
+
     await newRecord.save();
     res.status(201).json({ message: "Record added successfully", newRecord });
   } catch (error) {
-    res.status(500).json({ message: "Error adding record", error });
+    res.status(500).json({ error: "Error adding medical record." });
   }
 });
-
-// Route to upload medical history image
-app.post("/uploadmedicalimage", async (req, res) => {
-  try {
-    const { image } = req.body;
-    if (!image) return res.status(400).json({ message: "No image provided" });
-
-    const buffer = Buffer.from(image.split(",")[1], "base64");
-    const filePath = path.join(__dirname, "uploads", `medical_${Date.now()}.png`);
-    fs.writeFileSync(filePath, buffer);
-
-    res.status(201).json({ message: "Image uploaded successfully", imageUrl: filePath });
-  } catch (error) {
-    res.status(500).json({ message: "Error uploading image", error });
-  }
-});
-
 
 //---------------------------------------------Appointments---------------------------------------------------
 
@@ -222,7 +224,103 @@ app.get("/getappointmentscards", async (req, res) => {
 }
 });
 
-//--------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------New Entry-----------------------------------------------------------
+
+const newentrySchema = new mdb.Schema({
+  title: String,
+  description: String,
+  loggedAt:String
+  
+});
+
+const NewentryCard = mdb.model("NewentryCard", newentrySchema);
+
+app.post("/addnewentrycard", async (req, res) => {
+  
+  try {
+    const {title,description,loggedAt} = req.body;
+
+    if (!title||!description) {
+      return res.status(400).json({ message: "Please fill the details" });
+    }
+
+      const newentryEntry = new NewentryCard({title,description,loggedAt });
+      await newentryEntry.save();
+      res.status(201).json({ message: "NewEntries added successfully", entry: newentryEntry });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/getnewentrycards", async (req, res) => {
+  try {
+    const newentry = await NewentryCard.find();
+    if (newentry.length === 0) {
+      return res.status(404).json({ message: "No Newentries found for this user" });
+    }
+
+    res.status(200).json(newentry);
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+}
+});
+
+//------------------------------------------------Track Medication-------------------------------------------------------------
+
+// app.get("/gettrack", async (req, res) => {
+//   try {
+//     const records = await TrackCard.find();
+//     res.json(records);
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching records", error });
+//   }
+// });
+
+
+// const trackSchema = new mdb.Schema({
+//   medication: String,
+//   dosage: String,
+//   time: String,
+//   loggedAt:String,
+//   image: String, // Image path
+// });
+
+// const TrackCard = mdb.model("TrackCard", historySchema);
+
+// // Multer Storage Setup for Image Upload
+//   const store = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "trackuploads/"); 
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   },
+// });
+
+// const trackupload = multer({ storage: storage });
+// app.use("/trackuploads", express.static("trackuploads"));
+
+// // API to Add Medical History with Image
+
+// app.post("/addtrackcard", trackupload.single("image"), async (req, res) => {
+//   try {
+//     const { medication,dosage,time,loggedAt } = req.body;
+//     const imagePath = req.file ? `/trackuploads/${req.file.filename}` : null; // Store image path
+
+//     const newTrack = new TrackCard({ medication,dosage,time,loggedAt, image: imagePath });
+//     await newTrack.save();
+
+//     res.status(201).json({ message: "Record added successfully", newTrack });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error adding record", error });
+//   }
+// });
+
+
+//------------------------------------------------------------------------------------------------------------------------
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

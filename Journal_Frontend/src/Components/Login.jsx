@@ -12,24 +12,34 @@ const Login = () => {
   const navigate=useNavigate();
   const [email,setEmail]=useState("");
   const [password,setPass]=useState("");
-  
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (event) => {
     event.preventDefault();
-      const req = await axios.post("https://health-journal.onrender.com/login", {
+    if (!email || !password) {
+      alert("Please enter both email and password.");
+      return;
+    }
+    try{
+      setLoading(true);
+      const req = await axios.post("http://localhost:5000/login", {
         email,
         password,
       });
       
-      const message=req.data.message;
-      const loggedin = req.data.isLoggedin;
-      if (loggedin) {
+      const { message, isLoggedin} = req.data;
+      if (isLoggedin) {
+        
         alert(message);
         navigate("/home");
-        
       } else {
         alert("Invalid credentials. Please check your email and password.");
       }
-    
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert(error.response?.data?.message || "An error occurred. Please try again.");
+    } finally {
+      setLoading(false); 
+    }
   };
   
 
@@ -65,8 +75,8 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="login-btn">
-            Login
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </div>
       </form>
@@ -81,3 +91,5 @@ const Login = () => {
 };
 
 export default Login;
+
+

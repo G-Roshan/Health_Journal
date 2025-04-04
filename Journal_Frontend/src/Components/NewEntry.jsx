@@ -1,26 +1,43 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./css/NewEntry.css";
 import { IoMdClose } from "react-icons/io";
+import axios from "axios";
 
 const NewEntry = ({searchQuery}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
   const [list, setList] = useState([]);
+  
+  const fetchNewentries = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/getnewentrycards");
+      setList(response.data);
+    } catch (error) {
+      console.error("Error fetching symptoms:", error);
+    }
+  };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    fetchNewentries();
+  }, []);
+
+  const handleSubmit =async (e) => {
     e.preventDefault();
     const data = {
       title,
       description,
       loggedAt: new Date().toLocaleString(),
     };
-
-    setList([...list, data]);
-    setShow(false);
-    setTitle("");
-    setDescription("");
-    
+   try {
+      const response = await axios.post("http://localhost:5000/addnewentrycard", data);
+      fetchNewentries(); 
+      setShow(false);
+      setTitle("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error adding newentries:", error);
+    }  
   };
   const filteredList = list.filter((item) =>
     item.title.toLowerCase().includes(searchQuery.toLowerCase())

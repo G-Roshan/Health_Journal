@@ -39,7 +39,7 @@ const Appointments = ({ searchQuery }) => {
     setDate("");
     setReason("");
     } catch (error) {
-      console.error("Error adding symptom:", error);
+      console.error("Error adding appointments:", error);
     }  
   };
   const filteredList = list.filter((item) =>

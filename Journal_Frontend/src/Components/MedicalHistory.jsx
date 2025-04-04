@@ -1,13 +1,9 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./css/MedicalHistory.css";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 
-import html2canvas from "html2canvas";
-
 const MedicalHistory = ({ searchQuery }) => {
-  const [imageUrl, setImageUrl] = useState(null);
-
   const [records, setRecords] = useState([]);
   const [text, setText] = useState("");
   const [reason, setReason] = useState("");
@@ -15,11 +11,10 @@ const MedicalHistory = ({ searchQuery }) => {
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(false);
   const [zoom, setZoom] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
 
-  const fetchSymptoms = async () => {
+  const fetchMedicalHistory = async () => {
     try {
-      const response = await axios.get("https://health-journal.onrender.com/gethistorycards");
+      const response = await axios.get("http://localhost:5000/gethistorycards");
       setRecords(response.data);
     } catch (error) {
       console.error("Error fetching symptoms:", error);
@@ -27,71 +22,45 @@ const MedicalHistory = ({ searchQuery }) => {
   };
 
   useEffect(() => {
-      fetchSymptoms();
-    }, []);
+    fetchMedicalHistory();
+  }, []);
+
+  const handleAddRecord = async () => {
+    const formData = new FormData();
+    formData.append("text", text);
+    formData.append("reason", reason);
+    formData.append("date", date);
+    formData.append("image", image); // File object
   
-    
-
-  const handleAddRecord = async (e) => {
-    e.preventDefault();
-    if (!text && !image) {
-      alert("Please enter text or upload an image.");
-      return;
-    }
-
-    const newRecord = {
-      text,
-      reason,
-      date,
-      image: image ? URL.createObjectURL(image) : null,
-    };
-    if (image) {
-      URL.revokeObjectURL(image);
-    }
-    try{
-       const response = await axios.post("https://health-journal.onrender.com/addhistorycard", newRecord);
-       fetchSymptoms();
-       setText("");
-       setReason("");
-       setDate("");
-       setImage(null);
-       setShow(false);
-       setSubmitted(true);
-       document.getElementById("historyImage").value = "";
-
-      setTimeout(() => {
-         setSubmitted(false);
-      }, 1000);
-    }catch(error){
-      console.error("Error adding history:", error);
-    }
-  };
-
-  // Function to capture Medical History as an image
-  const captureMedicalHistory = async () => {
-    const historyElement = document.querySelector(".history-container");
-    if (!historyElement) return;
-
-    const canvas = await html2canvas(historyElement);
-    const imageBase64 = canvas.toDataURL("image/png");
-
-    // Upload image to backend
     try {
-      const response = await axios.post("https://health-journal.onrender.com/uploadmedicalimage", { image: imageBase64 });
-      setImageUrl(response.data.imageUrl);
-      alert("Medical history image uploaded successfully!");
+      const response = await axios.post(
+        "http://localhost:5000/addhistorycard",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+  
+      if (response.status === 201) {
+        fetchMedicalHistory();
+        setText("");
+        setReason("");
+        setDate("");
+        setImage(null);
+        setShow(false);
+        alert("Record added successfully!");
+      }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("Error adding record:", error);
+      alert("Failed to add record.");
     }
   };
   
-    const filteredList = records.filter((item) =>
-       item.text.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  
+
+  const filteredList = records.filter((item) =>
+    item.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
-
       <div className="history-container">
         <h2>Medical History</h2>
         <button className="history-add-btn" onClick={() => setShow(true)}>
@@ -144,16 +113,16 @@ const MedicalHistory = ({ searchQuery }) => {
               <p>
                 <strong>Date:</strong> {record.date}
               </p>
-              
               <p>
                 <strong>Reason:</strong> {record.reason}
               </p>
               {record.image && (
                 <img
-                  src={record.image}
+                  src={"http://localhost:5000" + record.image}
                   alt="Medical Record"
                   onClick={() => setZoom(record.image)}
                   className="record-image"
+                  id="history-image"
                 />
               )}
             </div>
@@ -162,7 +131,7 @@ const MedicalHistory = ({ searchQuery }) => {
         {zoom && (
           <div className="zoom-popup" onClick={() => setZoom(null)}>
             <img
-              src={zoom}
+              src={"http://localhost:5000" + zoom}
               alt="Zoomed Medical Record"
               className="zoomed-image"
             />
@@ -173,4 +142,4 @@ const MedicalHistory = ({ searchQuery }) => {
   );
 };
 
-export default MedicalHistory;  
+export default MedicalHistory;

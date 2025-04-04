@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./css/TrackMedication.css";
 import { IoMdClose } from "react-icons/io";
-
+import axios from "axios";
 
 const TrackMedication = ({searchQuery}) => {
   const [medication, setMedication] = useState("");
@@ -12,7 +12,7 @@ const TrackMedication = ({searchQuery}) => {
   const [show, setShow] = useState(false);
   const [zoom, setZoom] = useState(null);
 
-  const handleAddMedication = () => {
+  const handleAddMedication = async() => {
     if (!medication || !dosage || !time) {
       alert("Please fill all fields before saving.");
       return;
@@ -37,6 +37,70 @@ const TrackMedication = ({searchQuery}) => {
   const filteredList = medications.filter((item) =>
     item.medication.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+
+  // const fetchTrackmedication = async () => {
+  //     try {
+        
+  //       const response = await axios.get(
+  //         "http://localhost:5000/gettrackcards",
+         
+
+  //       );
+  //       setMedications(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching Medications:", error);
+  //     }
+  //   };
+  
+  //   useEffect(() => {
+  //     fetchTrackmedication();
+  //   }, []);
+  
+  //   const handleAddMedication = async () => {
+  //     const formData = new FormData();
+  //     formData.append("medication", medication);
+  //     formData.append("dosage", dosage);
+  //     formData.append("time", time);
+  //     formData.append("image", image); // File object
+  
+  //     try {
+  //       const response = await axios.post(
+  //         "http://localhost:5000/addtrackcard",
+  //         formData,
+  //         { headers: { "Content-Type": "multipart/form-data" } }
+  //       );
+  
+  //       if (response.status === 201) {
+  //         const newRecord = response.data.newRecord;
+  //         fetchMedication();
+  
+  //         setMedication("");
+  //         setDosage("");
+  //         setTime("");
+  //         setImage(null);
+  //         setShow(false);
+  
+  //         alert("Medication added successfully!");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error adding medication:", error);
+  //       alert("Failed to add medication.");
+  //     }
+  //   };
+  
+  //   const fetchMedication = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:5000/gettrackcards");
+  //       setMedications(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching Medications:", error);
+  //     }
+  //   };
+  
+  //   const filteredList = medications.filter((item) =>
+  //     item.medication.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
   return (
     <div>
 
