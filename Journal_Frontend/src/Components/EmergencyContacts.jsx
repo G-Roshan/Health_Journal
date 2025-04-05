@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./css/EmergencyContacts.css";
 import { IoMdClose } from "react-icons/io";
+import axios from "axios";
 
 const EmergencyContacts = ({searchQuery}) => {
   const [name, setName] = useState("");
@@ -9,15 +10,32 @@ const EmergencyContacts = ({searchQuery}) => {
   const [show, setShow] = useState(false);
   const [contacts, setContacts] = useState([]);
 
-  const handleSubmit = (e) => {
+  const fetchContacts = async () => {
+      try {
+        const response = await axios.get("https://health-journal.onrender.com/getcontactcards");
+        setContacts(response.data);
+      } catch (error) {
+        console.error("Error fetching symptoms:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchContacts();
+    }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newContact = { name, phone, txt };
-
-    setContacts([...contacts, newContact]);
-    setShow(false);
-    setName("");
-    setPhone("");
-    setTxt("");
+    try {
+      const response = await axios.post("https://health-journal.onrender.com/addcontactcard", newContact);
+      fetchContacts(); 
+      setShow(false);
+      setName("");
+      setPhone("");
+      setTxt("");
+    } catch (error) {
+      console.error("Error adding contacts:", error);
+    }  
   };
   const filteredList = contacts.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -27,7 +45,7 @@ const EmergencyContacts = ({searchQuery}) => {
 
       <div className="emergency-container">
         <h2>Emergency Contacts</h2>
-        <button onClick={() => setShow(true)} className="add-btn">
+        <button onClick={() => setShow(true)} className="contact-add-btn">
           Add Contact
         </button>
 

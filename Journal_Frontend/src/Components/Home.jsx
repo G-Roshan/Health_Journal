@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link,} from "react-router-dom";
 import {
   FaPhoneAlt,
   FaPlusCircle,
   FaNotesMedical,
   FaBalanceScale,
-  FaSignOutAlt
 } from "react-icons/fa";
 import "./css/Home.css";
 const healthTips = [
@@ -68,7 +67,7 @@ const Home = () => {
         </div>
 
         <footer className="footer">
-          <p>&copy; 2025 MediMap Foundations</p>
+          <p>&copy; 2025 All Rights Reserved by MediMap Foundations</p>
         </footer>
       </div>
     </div>

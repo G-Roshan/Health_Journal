@@ -11,7 +11,7 @@ const NewEntry = ({searchQuery}) => {
   
   const fetchNewentries = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/getnewentrycards");
+      const response = await axios.get("https://health-journal.onrender.com/getnewentrycards");
       setList(response.data);
     } catch (error) {
       console.error("Error fetching symptoms:", error);
@@ -30,7 +30,7 @@ const NewEntry = ({searchQuery}) => {
       loggedAt: new Date().toLocaleString(),
     };
    try {
-      const response = await axios.post("http://localhost:5000/addnewentrycard", data);
+      const response = await axios.post("https://health-journal.onrender.com/addnewentrycard", data);
       fetchNewentries(); 
       setShow(false);
       setTitle("");
@@ -46,7 +46,7 @@ const NewEntry = ({searchQuery}) => {
     <div>
       <div className="newentry-container">
         <h2>New Entries</h2>
-        <button onClick={() => setShow(true)} className="add-btn">
+        <button onClick={() => setShow(true)} className="newentry-add-btn">
           Add New Entry
         </button>
         <div className="entries-grid">
@@ -68,9 +68,9 @@ const NewEntry = ({searchQuery}) => {
           )}
         </div>
         {show && (
-          <div className="form-popup">
-            <div className="form-container">
-              <button className="close-btn" onClick={() => setShow(false)}>
+          <div className="newentry-form-popup">
+            <div className="newentry-form-container">
+              <button className="newentry-close-btn" onClick={() => setShow(false)}>
                 <IoMdClose />
               </button>
               <h2>Log Your Entry</h2>

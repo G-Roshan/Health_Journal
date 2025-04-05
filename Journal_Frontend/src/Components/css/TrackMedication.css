@@ -9,7 +9,7 @@
   margin-bottom: 60px;
 }
 
-.add-btn {
+.trackmed-add-btn {
   position: absolute;
   top: 170px;
   right: 100px;
@@ -129,7 +129,7 @@ textarea {
 }
 
 @media (max-width: 768px) {
-  .add-btn {
+  .trackmed-add-btn {
     top: 430px;
     right: 50px;
     font-size: 14px;
@@ -143,8 +143,8 @@ textarea {
 }
 
 @media (max-width: 500px) {
-  .add-btn {
-    top: 480px;
-    right: 140px;
+  .trackmed-add-btn {
+    top: 460px;
+    right: 130px;
   }
 }

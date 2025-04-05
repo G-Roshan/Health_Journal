@@ -15,7 +15,7 @@ body{
     align-items: center;
     color: #002B5B;
 }
-.home h1{
+.home-text h1{
     font-size:40px;
     margin-bottom: 10px;
     color:#002B5B;
@@ -24,7 +24,7 @@ body{
 .medimap-text{
     color: #00bfff;
 }
-.home p{
+.home-text p{
     font-size: 20px;
     margin-bottom: 10px;
     color:#4A5568;
@@ -125,6 +125,12 @@ body{
     }
     .search-container input {
         width:70%;
+    }
+    .health-tip-container {
+        margin-top:0;
+    }
+    .home-text p{
+        margin-bottom: 0;
     }
 } 
 

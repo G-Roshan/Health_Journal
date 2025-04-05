@@ -14,7 +14,7 @@ const MedicalHistory = ({ searchQuery }) => {
 
   const fetchMedicalHistory = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/gethistorycards");
+      const response = await axios.get("https://health-journal.onrender.com/gethistorycards");
       setRecords(response.data);
     } catch (error) {
       console.error("Error fetching symptoms:", error);
@@ -34,7 +34,7 @@ const MedicalHistory = ({ searchQuery }) => {
   
     try {
       const response = await axios.post(
-        "http://localhost:5000/addhistorycard",
+        "https://health-journal.onrender.com/addhistorycard",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

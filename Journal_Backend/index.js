@@ -348,7 +348,55 @@ app.post("/addtrackcard", trackupload.single("image"), async (req, res) => {
   }
 });
 
-//------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------Emergency Contacts--------------------------------------------------------------------------
+
+const contactSchema = new mdb.Schema({
+  name: String,
+  phone: Number,
+  text: String,
+  
+});
+
+const ContactCard = mdb.model("ContactCard", contactSchema);
+app.post("/addcontactcard", async (req, res) => {
+  try {
+    const { name,phone,text } = req.body;
+
+    if (!name || !phone ) {
+      return res.status(400).json({ message: "Please fill the details" });
+    }
+
+    const newContactEntry = new ContactCard({ name,phone,text });
+    await newContactEntry.save();
+    res
+      .status(201)
+      .json({
+        message: "Contacts added successfully",
+        entry: newContactEntry,
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/getcontactcards", async (req, res) => {
+  try {
+    const contacts = await ContactCard.find();
+    if (contacts.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No contacts found for this user" });
+    }
+
+    res.status(200).json(contacts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//-------------------------------------------------------------------------------------------------------------------------
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

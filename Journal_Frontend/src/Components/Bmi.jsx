@@ -37,7 +37,7 @@ const Bmi = () => {
           />
         </div>
         <div className="input-group">
-          <label>Height (m)</label>
+          <label>Height (cm)</label>
           <input
             type="number"
             value={height}

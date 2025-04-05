@@ -5,9 +5,9 @@
 }
 .emergency-container h2 {
   color: #002b5b;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
 }
-.add-btn {
+.contact-add-btn {
   background: #0099cc;
   color: white;
   border: none;
@@ -19,7 +19,7 @@
   top: 170px;
 }
 
-.add-btn:hover {
+.contact-add-btn:hover {
   background-color: #0077b6;
 }
 
@@ -27,7 +27,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .contact-card {
@@ -92,14 +92,14 @@ textarea {
 }
 
 @media (max-width: 800px) {
-  .add-btn {
+  .contact-add-btn {
     top: 425px;
     right: 30px;
   }
 }
 @media (max-width: 450px) {
-  .add-btn {
-    top: 490px;
+  .contact-add-btn {
+    top: 40px;
     right: 110px;
   }
 }

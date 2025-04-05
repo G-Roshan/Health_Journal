@@ -14,7 +14,7 @@ const TrackMedication = ({ searchQuery }) => {
 
   const fetchMedications = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/gettrackcards");
+      const response = await axios.get("https://health-journal.onrender.com/gettrackcards");
       setMedications(response.data);
     } catch (error) {
       console.error("Error fetching Medications:", error);
@@ -38,7 +38,7 @@ const TrackMedication = ({ searchQuery }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/addtrackcard",
+        "https://health-journal.onrender.com/addtrackcard",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -66,7 +66,7 @@ const TrackMedication = ({ searchQuery }) => {
   return (
     <div className="trackmed-container">
       <h2>Track Your Medication</h2>
-      <button onClick={() => setShow(true)} className="add-btn">
+      <button onClick={() => setShow(true)} className="trackmed-add-btn">
         Add Medication
       </button>
 
@@ -90,7 +90,7 @@ const TrackMedication = ({ searchQuery }) => {
               </p>
               {item.imageUrl && (
                 <img
-                  src={`http://localhost:5000${item.imageUrl}`}
+                  src={`https://health-journal.onrender.com${item.imageUrl}`}
                   alt="Prescription"
                   onClick={() => setZoom(item.imageUrl)}
                   className="prescription-image"
@@ -144,7 +144,7 @@ const TrackMedication = ({ searchQuery }) => {
       {zoom && (
         <div className="zoom-popup" onClick={() => setZoom(null)}>
           <img
-            src={`http://localhost:5000${zoom}`}
+            src={`https://health-journal.onrender.com${zoom}`}
             alt="Zoomed Prescription"
             className="zoomed-image"
           />
