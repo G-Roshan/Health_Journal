@@ -118,7 +118,7 @@ const MedicalHistory = ({ searchQuery }) => {
               </p>
               {record.image && (
                 <img
-                  src={"http://localhost:5000" + record.image}
+                  src={"https://health-journal.onrender.com" + record.image}
                   alt="Medical Record"
                   onClick={() => setZoom(record.image)}
                   className="record-image"
@@ -131,7 +131,7 @@ const MedicalHistory = ({ searchQuery }) => {
         {zoom && (
           <div className="zoom-popup" onClick={() => setZoom(null)}>
             <img
-              src={"http://localhost:5000" + zoom}
+              src={"https://health-journal.onrender.com" + zoom}
               alt="Zoomed Medical Record"
               className="zoomed-image"
             />
