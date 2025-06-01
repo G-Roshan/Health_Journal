@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./Journal_Backend
+    container_name: health_backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Journal_Backend:/app
+    working_dir: /app
+    command: npm start
+    restart: always
+    networks:
+      - health_net
+
+  frontend:
+    build:
+      context: ./Journal_Frontend
+    container_name: health_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Journal_Frontend:/app
+    working_dir: /app
+    command: npm start
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - health_net
+
+networks:
+  health_net:
+    driver: bridge
